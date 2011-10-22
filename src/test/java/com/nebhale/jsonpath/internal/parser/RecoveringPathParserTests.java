@@ -1,0 +1,102 @@
+/*
+ * Copyright 2011 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.nebhale.jsonpath.internal.parser;
+
+import static com.nebhale.jsonpath.testutils.JsonUtils.NODE;
+import static org.junit.Assert.assertEquals;
+
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.junit.Test;
+
+public final class RecoveringPathParserTests {
+
+    private final RecoveringPathParser parser = new RecoveringPathParser();
+
+    @Test
+    public void illegalToken() {
+        ParserResult result = this.parser.parse(".dot_child");
+        assertEquals(result.getProblems().toString(), 1, result.getProblems().size());
+    }
+
+    @Test
+    public void root() {
+        ParserResult result = this.parser.parse("$");
+
+        assertEquals(result.getProblems().toString(), 0, result.getProblems().size());
+        assertEquals(NODE, result.getPathComponent().get(NODE));
+    }
+
+    @Test
+    public void dotChild() {
+        ParserResult result = this.parser.parse("$.store");
+
+        assertEquals(result.getProblems().toString(), 0, result.getProblems().size());
+        assertEquals(NODE.get("store"), result.getPathComponent().get(NODE));
+    }
+
+    @Test
+    public void arrayChild() {
+        ParserResult result = this.parser.parse("$['store']");
+
+        assertEquals(result.getProblems().toString(), 0, result.getProblems().size());
+        assertEquals(NODE.get("store"), result.getPathComponent().get(NODE));
+    }
+
+    @Test
+    public void index() {
+        ParserResult result = this.parser.parse("$.store.book[0]");
+
+        assertEquals(result.getProblems().toString(), 0, result.getProblems().size());
+        assertEquals(NODE.get("store").get("book").get(0), result.getPathComponent().get(NODE));
+    }
+
+    @Test
+    public void indexes() {
+        JsonNode bookNode = NODE.get("store").get("book");
+        ArrayNode expected = JsonNodeFactory.instance.arrayNode();
+        expected.add(bookNode.get(0));
+        expected.add(bookNode.get(1));
+
+        ParserResult result = this.parser.parse("$.store.book[0, 1]");
+
+        assertEquals(result.getProblems().toString(), 0, result.getProblems().size());
+        assertEquals(expected, result.getPathComponent().get(NODE));
+    }
+
+    @Test
+    public void examples() {
+        assertEquals(NODE.get("store").get("book").get(0).get("title"), this.parser.parse("$.store.book[0].title").getPathComponent().get(NODE));
+        assertEquals(NODE.get("store").get("book").get(0).get("title"),
+            this.parser.parse("$['store']['book'][0]['title']").getPathComponent().get(NODE));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void lexProblems() {
+        ParserResult result = this.parser.parse("Q");
+        assertEquals(1, result.getProblems().size());
+        result.getPathComponent();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void parserProblems() {
+        ParserResult result = this.parser.parse("$$");
+        assertEquals(1, result.getProblems().size());
+        result.getPathComponent();
+    }
+}
