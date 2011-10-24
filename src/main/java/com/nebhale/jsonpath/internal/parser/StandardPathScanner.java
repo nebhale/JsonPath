@@ -29,7 +29,7 @@ import com.nebhale.jsonpath.internal.util.Sets;
  * <p />
  * 
  * <pre>
- * COMPLEX_NAME_CHARACTER: LETTER | DIGIT | COMMA | HYPHEN | SPACE | UNDERSCORE 
+ * COMPLEX_NAME_CHARACTER: LETTER | DIGIT | COMMA | HYPHEN | SPACE | UNDERSCORE
  * SIMPLE_NAME_CHARACTER:  LETTER | DIGIT | UNDERSCORE
  * INDEX_CHARACTER:        DIGIT | COMMA | SPACE
  * LETTER:                 [A-Za-z]
@@ -45,6 +45,7 @@ import com.nebhale.jsonpath.internal.util.Sets;
  * ROOT:            $
  * SPACE:          ' '
  * UNDERSCORE:      _
+ * WILDCARD:        *
  * </pre>
  * 
  * <strong>Concurrent Semantics</strong><br />
@@ -72,6 +73,8 @@ final class StandardPathScanner implements PathScanner {
     private static final char SPACE = ' ';
 
     private static final char UNDERSCORE = '_';
+
+    private static final char WILDCARD = '*';
 
     private final List<PathCharacter> pathCharacters = new ArrayList<PathCharacter>();
 
@@ -106,6 +109,8 @@ final class StandardPathScanner implements PathScanner {
                 characterTypes.add(CharacterType.SPACE);
             } else if (c == UNDERSCORE) {
                 characterTypes.add(CharacterType.UNDERSCORE);
+            } else if (c == WILDCARD) {
+                characterTypes.add(CharacterType.WILDCARD);
             }
 
             if (isComplexNameCharacter(c)) {

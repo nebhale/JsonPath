@@ -57,7 +57,8 @@ final class Token {
 
         ROOT, //
         CHILD, //
-        INDEX
+        INDEX, //
+        WILDCARD
 
     }
 

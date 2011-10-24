@@ -27,12 +27,13 @@ import com.nebhale.jsonpath.internal.parser.Token.TokenType;
  * <p />
  * 
  * <pre>
- * ROOT:        ROOT
- * CHILD:       DOT_CHILD | ARRAY_CHILD
- * INDEX:       ARRAY_OPEN INDEX_CHARACTER* ARRAY_CLOSE
- * 
- * DOT_CHILD:   DOT SIMPLE_NAME_CHARACTER*
- * ARRAY_CHILD: ARRAY_OPEN ( QUOTE SIMPLE_NAME_CHARACTER* QUOTE | DOUBLE_QUOTE SIMPLE_NAME_CHARACTER* DOUBLE_QUOTE ) ARRAY_CLOSE
+ * ROOT:            ROOT
+ * CHILD:           DOT_CHILD | ARRAY_CHILD
+ * INDEX:           ARRAY_OPEN ( INDEX_CHARACTER* | WILDCARD ) ARRAY_CLOSE
+ * DOT_CHILD:       DOT SIMPLE_NAME
+ * ARRAY_CHILD:     ARRAY_OPEN ( QUOTE COMPLEX_NAME QUOTE | DOUBLE_QUOTE COMPLEX_NAME DOUBLE_QUOTE ) ARRAY_CLOSE
+ * SIMPLE_NAME:     SIMPLE_NAME_CHARACTER* | WILDCARD
+ * COMPLEX_NAME:    COMPLEX_NAME_CHARACTER* | WILDCARD
  * </pre>
  * 
  * <strong>Concurrent Semantics</strong><br />
@@ -51,166 +52,141 @@ final class RecoveringPathLexer implements PathLexer {
         while (scanner.ready()) {
             PathCharacter c = scanner.get();
 
-            if (context.parsingState == ParsingState.DEFAULT) {
-                handleParsingStateDefault(context, c);
-            } else if (context.parsingState == ParsingState.ARRAY) {
-                handleParsingStateArray(context, c);
-            } else if (context.parsingState == ParsingState.ARRAY_CHILD_DOUBLE_QUOTE) {
-                handleArrayChildDoubleQuote(context, c);
-            } else if (context.parsingState == ParsingState.ARRAY_CHILD_QUOTE) {
-                handleArrayChildQuote(context, c);
+            if (context.parsingState == ParsingState.BASE) {
+                base(context, c);
+            } else if (context.parsingState == ParsingState.ARRAY_OPEN) {
+                arrayOpen(context, c);
+            } else if (context.parsingState == ParsingState.ARRAY_CLOSE) {
+                arrayClose(context, c);
+            } else if (context.parsingState == ParsingState.DOUBLE_QUOTE_CHILD) {
+                arrayChild(context, c, CharacterType.DOUBLE_QUOTE, ParsingState.DOUBLE_QUOTE_CLOSE);
+            } else if (context.parsingState == ParsingState.QUOTE_CHILD) {
+                arrayChild(context, c, CharacterType.QUOTE, ParsingState.QUOTE_CLOSE);
             } else if (context.parsingState == ParsingState.DOT_CHILD) {
-                handleParsingStateDotChild(context, c);
+                dotChild(context, c);
+            } else if (context.parsingState == ParsingState.DOUBLE_QUOTE_CLOSE) {
+                arrayChildClose(context, c, CharacterType.DOUBLE_QUOTE);
             } else if (context.parsingState == ParsingState.INDEX) {
-                handleParsingStateIndex(context, c);
+                index(context, c);
+            } else if (context.parsingState == ParsingState.QUOTE_CLOSE) {
+                arrayChildClose(context, c, CharacterType.QUOTE);
             }
         }
 
         return new LexerResult(context.tokenStream, context.problems);
     }
 
-    private void emitArrayChild(LexerContext context) {
-        context.tokenStream.add(createToken(TokenType.CHILD, context));
-        context.parsingState = ParsingState.ARRAY;
+    private void arrayChild(LexerContext context, PathCharacter c, CharacterType quoteType, ParsingState closeState) {
+        if (c.isType(CharacterType.COMPLEX_NAME_CHARACTER)) {
+            context.value.add(c);
+            context.scanner.consume();
+        } else if (c.isType(quoteType)) {
+            context.tokenStream.add(createToken(TokenType.CHILD, context));
+            context.parsingState = closeState;
+        } else if (c.isType(CharacterType.WILDCARD)) {
+            emitWildcard(context, c);
+            context.scanner.consume();
+            context.parsingState = closeState;
+        } else {
+            emitIllegalCharacter(context, c);
+            context.scanner.consume();
+            context.parsingState = closeState;
+        }
     }
 
-    private void emitDotChild(LexerContext context) {
-        context.tokenStream.add(createToken(TokenType.CHILD, context));
-        context.parsingState = ParsingState.DEFAULT;
+    private void arrayChildClose(LexerContext context, PathCharacter c, CharacterType quoteType) {
+        if (c.isType(quoteType)) {
+            context.parsingState = ParsingState.ARRAY_CLOSE;
+        } else {
+            emitIllegalCharacter(context, c);
+        }
+        context.scanner.consume();
     }
 
-    private void emitIndex(LexerContext context) {
-        context.tokenStream.add(createToken(TokenType.INDEX, context));
-        context.parsingState = ParsingState.ARRAY;
+    private void arrayClose(LexerContext context, PathCharacter c) {
+        if (c.isType(CharacterType.ARRAY_CLOSE)) {
+            context.parsingState = ParsingState.BASE;
+        } else {
+            emitIllegalCharacter(context, c);
+        }
+        context.scanner.consume();
+    }
+
+    private void arrayOpen(LexerContext context, PathCharacter c) {
+        if (c.isType(CharacterType.DOUBLE_QUOTE)) {
+            context.scanner.consume();
+            context.parsingState = ParsingState.DOUBLE_QUOTE_CHILD;
+        } else if (c.isType(CharacterType.QUOTE)) {
+            context.scanner.consume();
+            context.parsingState = ParsingState.QUOTE_CHILD;
+        } else if (c.isType(CharacterType.ARRAY_CLOSE)) {
+            context.parsingState = ParsingState.ARRAY_CLOSE;
+        } else if (c.isType(CharacterType.DIGIT)) {
+            context.parsingState = ParsingState.INDEX;
+        } else if (c.isType(CharacterType.WILDCARD)) {
+            context.parsingState = ParsingState.INDEX;
+        } else {
+            emitIllegalCharacter(context, c);
+            context.scanner.consume();
+        }
+    }
+
+    private void base(LexerContext context, PathCharacter c) {
+        if (c.isType(CharacterType.ARRAY_OPEN)) {
+            context.parsingState = ParsingState.ARRAY_OPEN;
+        } else if (c.isType(CharacterType.DOT)) {
+            context.parsingState = ParsingState.DOT_CHILD;
+        } else if (c.isType(CharacterType.ROOT)) {
+            Token token = new Token(TokenType.ROOT, c.getPosition());
+            context.tokenStream.add(token);
+        } else if (!c.isType(CharacterType.END)) {
+            emitIllegalCharacter(context, c);
+        }
+        context.scanner.consume();
+    }
+
+    private void dotChild(LexerContext context, PathCharacter c) {
+        if (c.isType(CharacterType.SIMPLE_NAME_CHARACTER)) {
+            context.value.add(c);
+            context.scanner.consume();
+        } else if (c.isType(CharacterType.WILDCARD)) {
+            emitWildcard(context, c);
+            context.scanner.consume();
+            context.parsingState = ParsingState.BASE;
+        } else {
+            context.tokenStream.add(createToken(TokenType.CHILD, context));
+            context.parsingState = ParsingState.BASE;
+        }
+    }
+
+    private void index(LexerContext context, PathCharacter c) {
+        if (c.isType(CharacterType.INDEX_CHARACTER)) {
+            context.value.add(c);
+            context.scanner.consume();
+        } else if (c.isType(CharacterType.WILDCARD)) {
+            emitWildcard(context, c);
+            context.scanner.consume();
+            context.parsingState = ParsingState.ARRAY_CLOSE;
+        } else if (c.isType(CharacterType.ARRAY_CLOSE)) {
+            context.tokenStream.add(createToken(TokenType.INDEX, context));
+            context.parsingState = ParsingState.ARRAY_CLOSE;
+        } else {
+            emitIllegalCharacter(context, c);
+            context.scanner.consume();
+        }
+    }
+
+    private void emitWildcard(LexerContext context, PathCharacter c) {
+        if (context.value.isEmpty()) {
+            Token token = new Token(TokenType.WILDCARD, c.getPosition());
+            context.tokenStream.add(token);
+        } else {
+            emitIllegalCharacter(context, c);
+        }
     }
 
     private void emitIllegalCharacter(LexerContext context, PathCharacter c) {
         context.problems.add(new ExpressionProblem(context.expression, c.getPosition(), "Illegal character '%s'", c));
-    }
-
-    private void emitRoot(LexerContext context, PathCharacter c) {
-        Token token = new Token(TokenType.ROOT, c.getPosition());
-        context.tokenStream.add(token);
-    }
-
-    private void handleArrayChildDoubleQuote(LexerContext context, PathCharacter c) {
-        if (c.isType(CharacterType.COMPLEX_NAME_CHARACTER)) {
-            handleComplexNameCharacter(context, c);
-        } else if (c.isType(CharacterType.DOUBLE_QUOTE)) {
-            emitArrayChild(context);
-            context.scanner.consume();
-        } else {
-            emitIllegalCharacter(context, c);
-            context.scanner.consume();
-        }
-    }
-
-    private void handleArrayChildQuote(LexerContext context, PathCharacter c) {
-        if (c.isType(CharacterType.COMPLEX_NAME_CHARACTER)) {
-            handleComplexNameCharacter(context, c);
-        } else if (c.isType(CharacterType.QUOTE)) {
-            emitArrayChild(context);
-            context.scanner.consume();
-        } else {
-            emitIllegalCharacter(context, c);
-            context.scanner.consume();
-        }
-    }
-
-    private void handleArrayDigit(LexerContext context, PathCharacter c) {
-        context.value.add(c);
-        context.scanner.consume();
-        context.parsingState = ParsingState.INDEX;
-    }
-
-    private void handleArrayDoubleQuote(LexerContext context) {
-        context.scanner.consume();
-        context.parsingState = ParsingState.ARRAY_CHILD_DOUBLE_QUOTE;
-    }
-
-    private void handleArrayClose(LexerContext context) {
-        context.scanner.consume();
-        context.parsingState = ParsingState.DEFAULT;
-    }
-
-    private void handleArrayOpen(LexerContext context) {
-        context.scanner.consume();
-        context.parsingState = ParsingState.ARRAY;
-    }
-
-    private void handleArrayQuote(LexerContext context) {
-        context.scanner.consume();
-        context.parsingState = ParsingState.ARRAY_CHILD_QUOTE;
-    }
-
-    private void handleComplexNameCharacter(LexerContext context, PathCharacter c) {
-        context.value.add(c);
-        context.scanner.consume();
-    }
-
-    private void handleDot(LexerContext context) {
-        context.scanner.consume();
-        context.parsingState = ParsingState.DOT_CHILD;
-    }
-
-    private void handleIndexCharacter(LexerContext context, PathCharacter c) {
-        context.value.add(c);
-        context.scanner.consume();
-    }
-
-    private void handleParsingStateArray(LexerContext context, PathCharacter c) {
-        if (c.isType(CharacterType.DOUBLE_QUOTE)) {
-            handleArrayDoubleQuote(context);
-        } else if (c.isType(CharacterType.QUOTE)) {
-            handleArrayQuote(context);
-        } else if (c.isType(CharacterType.ARRAY_CLOSE)) {
-            handleArrayClose(context);
-        } else if (c.isType(CharacterType.DIGIT)) {
-            handleArrayDigit(context, c);
-        } else {
-            emitIllegalCharacter(context, c);
-            context.scanner.consume();
-        }
-    }
-
-    private void handleParsingStateDefault(LexerContext context, PathCharacter c) {
-        if (c.isType(CharacterType.ARRAY_OPEN)) {
-            handleArrayOpen(context);
-        } else if (c.isType(CharacterType.DOT)) {
-            handleDot(context);
-        } else if (c.isType(CharacterType.END)) {
-            context.scanner.consume();
-        } else if (c.isType(CharacterType.ROOT)) {
-            emitRoot(context, c);
-            context.scanner.consume();
-        } else {
-            emitIllegalCharacter(context, c);
-            context.scanner.consume();
-        }
-    }
-
-    private void handleParsingStateDotChild(LexerContext context, PathCharacter c) {
-        if (c.isType(CharacterType.SIMPLE_NAME_CHARACTER)) {
-            handleSimpleNameCharacter(context, c);
-        } else {
-            emitDotChild(context);
-        }
-    }
-
-    private void handleParsingStateIndex(LexerContext context, PathCharacter c) {
-        if (c.isType(CharacterType.INDEX_CHARACTER)) {
-            handleIndexCharacter(context, c);
-        } else if (c.isType(CharacterType.ARRAY_CLOSE)) {
-            emitIndex(context);
-        } else {
-            emitIllegalCharacter(context, c);
-            context.scanner.consume();
-        }
-    }
-
-    private void handleSimpleNameCharacter(LexerContext context, PathCharacter c) {
-        context.value.add(c);
-        context.scanner.consume();
     }
 
     private Token createToken(TokenType type, LexerContext context) {
@@ -236,19 +212,22 @@ final class RecoveringPathLexer implements PathLexer {
     }
 
     private static enum ParsingState {
-        ARRAY, //
-        ARRAY_CHILD_DOUBLE_QUOTE, //
-        ARRAY_CHILD_QUOTE, //
-        DEFAULT, //
+        ARRAY_OPEN, //
+        ARRAY_CLOSE, //
+        BASE, //
         DOT_CHILD, //
-        INDEX
+        DOUBLE_QUOTE_CHILD, //
+        DOUBLE_QUOTE_CLOSE, //
+        INDEX, //
+        QUOTE_CHILD, //
+        QUOTE_CLOSE
     }
 
     private static class LexerContext {
 
         private final String expression;
 
-        private volatile ParsingState parsingState = ParsingState.DEFAULT;
+        private volatile ParsingState parsingState = ParsingState.BASE;
 
         private final List<ExpressionProblem> problems = new ArrayList<ExpressionProblem>();
 
