@@ -27,7 +27,7 @@ import org.junit.Test;
 import com.nebhale.jsonpath.internal.parser.PathCharacter.CharacterType;
 import com.nebhale.jsonpath.internal.util.Sets;
 
-public final class PathScannerTests {
+public final class StandardPathScannerTests {
 
     @Test
     public void test() {
@@ -47,9 +47,10 @@ public final class PathScannerTests {
             Sets.asSet(CharacterType.UNDERSCORE, CharacterType.SIMPLE_NAME_CHARACTER, CharacterType.COMPLEX_NAME_CHARACTER), '_', 9));
         expected.add(new PathCharacter(Sets.asSet(CharacterType.COMMA, CharacterType.COMPLEX_NAME_CHARACTER, CharacterType.INDEX_CHARACTER), ',', 10));
         expected.add(new PathCharacter(Sets.asSet(CharacterType.SPACE, CharacterType.COMPLEX_NAME_CHARACTER, CharacterType.INDEX_CHARACTER), ' ', 11));
-        expected.add(new PathCharacter(Sets.asSet(CharacterType.END), '\0', 12));
+        expected.add(new PathCharacter(Sets.asSet(CharacterType.WILDCARD), '*', 12));
+        expected.add(new PathCharacter(Sets.asSet(CharacterType.END), '\0', 13));
 
-        StandardPathScanner p = new StandardPathScanner("][0.\"-A'$_, ");
+        StandardPathScanner p = new StandardPathScanner("][0.\"-A'$_, *");
 
         Iterator<PathCharacter> i = expected.iterator();
         while (p.ready()) {

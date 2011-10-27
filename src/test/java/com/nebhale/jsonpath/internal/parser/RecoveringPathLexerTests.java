@@ -16,6 +16,8 @@
 
 package com.nebhale.jsonpath.internal.parser;
 
+import static com.nebhale.jsonpath.testutils.AssertUtils.assertNoProblems;
+import static com.nebhale.jsonpath.testutils.AssertUtils.assertProblemCount;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -29,80 +31,158 @@ public class RecoveringPathLexerTests {
     @Test(expected = IllegalStateException.class)
     public void lexProblems() {
         LexerResult result = this.lexer.lex("Q");
-        assertEquals(result.getProblems().toString(), 1, result.getProblems().size());
+        assertProblemCount(result, 1);
         result.getTokenStream();
     }
 
     @Test
     public void illegalStartCharacter() {
         LexerResult result = this.lexer.lex("Q");
-        assertEquals(result.getProblems().toString(), 1, result.getProblems().size());
+        assertProblemCount(result, 1);
     }
 
     @Test
     public void illegalArrayChildDoubleQuoteCharacter() {
         LexerResult result = this.lexer.lex("[\"&\"]");
-        assertEquals(result.getProblems().toString(), 1, result.getProblems().size());
+        assertProblemCount(result, 1);
     }
 
     @Test
     public void illegalArrayChildQuoteCharacter() {
         LexerResult result = this.lexer.lex("['&']");
-        assertEquals(result.getProblems().toString(), 1, result.getProblems().size());
+        assertProblemCount(result, 1);
     }
 
     @Test
     public void illegalArrayCharacter() {
         LexerResult result = this.lexer.lex("[&]");
-        assertEquals(result.getProblems().toString(), 1, result.getProblems().size());
+        assertProblemCount(result, 1);
     }
 
     @Test
     public void illegalIndexCharacter() {
         LexerResult result = this.lexer.lex("[0&]");
-        assertEquals(result.getProblems().toString(), 1, result.getProblems().size());
+        assertProblemCount(result, 1);
+    }
+
+    @Test
+    public void illegalIndexWildcard() {
+        LexerResult result = this.lexer.lex("[0*]");
+        assertProblemCount(result, 1);
+    }
+
+    @Test
+    public void illegalIndexWildcardLate() {
+        LexerResult result = this.lexer.lex("[*0]");
+        assertProblemCount(result, 1);
+    }
+
+    @Test
+    public void illegalDotChildWildcard() {
+        LexerResult result = this.lexer.lex(".dot_child*");
+        assertProblemCount(result, 1);
+    }
+
+    @Test
+    public void illegalDoubleQuoteWildcard() {
+        LexerResult result = this.lexer.lex("[\"array_child*\"]");
+        assertProblemCount(result, 1);
+    }
+
+    @Test
+    public void illegalQuoteWildcard() {
+        LexerResult result = this.lexer.lex("['array_child*']");
+        assertProblemCount(result, 1);
+    }
+
+    @Test
+    public void illegalQuoteWildcardLate() {
+        LexerResult result = this.lexer.lex("['*a']");
+        assertProblemCount(result, 1);
     }
 
     @Test
     public void root() {
         LexerResult result = this.lexer.lex("$");
-        assertEquals(result.getProblems().toString(), 0, result.getProblems().size());
+        assertNoProblems(result);
         assertEquals(new Token(TokenType.ROOT, 0), result.getTokenStream().remove());
     }
 
     @Test
     public void dotChild() {
         LexerResult result = this.lexer.lex(".dot_child");
-        assertEquals(result.getProblems().toString(), 0, result.getProblems().size());
+        assertNoProblems(result);
         assertEquals(new Token(TokenType.CHILD, "dot_child", 1, 9), result.getTokenStream().remove());
     }
 
     @Test
     public void arrayChildQuote() {
         LexerResult result = this.lexer.lex("['array_child']");
-        assertEquals(result.getProblems().toString(), 0, result.getProblems().size());
+        assertNoProblems(result);
         assertEquals(new Token(TokenType.CHILD, "array_child", 2, 12), result.getTokenStream().remove());
     }
 
     @Test
     public void arrayChildDoubleQuote() {
         LexerResult result = this.lexer.lex("[\"array_child\"]");
-        assertEquals(result.getProblems().toString(), 0, result.getProblems().size());
+        assertNoProblems(result);
         assertEquals(new Token(TokenType.CHILD, "array_child", 2, 12), result.getTokenStream().remove());
+    }
+
+    @Test
+    public void arrayChildrenQuote() {
+        LexerResult result = this.lexer.lex("['first_child, second_child']");
+        assertNoProblems(result);
+        assertEquals(new Token(TokenType.CHILD, "first_child, second_child", 2, 26), result.getTokenStream().remove());
+    }
+
+    @Test
+    public void arrayChildrenDoubleQuote() {
+        LexerResult result = this.lexer.lex("[\"first_child, second_child\"]");
+        assertNoProblems(result);
+        assertEquals(new Token(TokenType.CHILD, "first_child, second_child", 2, 26), result.getTokenStream().remove());
     }
 
     @Test
     public void index() {
         LexerResult result = this.lexer.lex("[0123456789]");
-        assertEquals(result.getProblems().toString(), 0, result.getProblems().size());
+        assertNoProblems(result);
         assertEquals(new Token(TokenType.INDEX, "0123456789", 1, 10), result.getTokenStream().remove());
     }
 
     @Test
     public void indexes() {
         LexerResult result = this.lexer.lex("[01234, 56789]");
-        assertEquals(result.getProblems().toString(), 0, result.getProblems().size());
+        assertNoProblems(result);
         assertEquals(new Token(TokenType.INDEX, "01234, 56789", 1, 12), result.getTokenStream().remove());
+    }
+
+    @Test
+    public void wildcardIndex() {
+        LexerResult result = this.lexer.lex("[*]");
+        assertNoProblems(result);
+        assertEquals(new Token(TokenType.WILDCARD, 1), result.getTokenStream().remove());
+    }
+
+    @Test
+    public void wildcardName() {
+        LexerResult result = this.lexer.lex(".*");
+        assertNoProblems(result);
+        assertEquals(new Token(TokenType.WILDCARD, 1), result.getTokenStream().remove());
+    }
+
+    @Test
+    public void wildcardDoubleQuote() {
+        LexerResult result = this.lexer.lex("[\"*\"]");
+        assertNoProblems(result);
+        assertEquals(new Token(TokenType.WILDCARD, 2), result.getTokenStream().remove());
+    }
+
+    @Test
+    public void wildcardQuote() {
+        LexerResult result = this.lexer.lex("['*']");
+        assertNoProblems(result);
+        assertEquals(new Token(TokenType.WILDCARD, 2), result.getTokenStream().remove());
     }
 
 }

@@ -18,28 +18,21 @@ package com.nebhale.jsonpath.internal.parser;
 
 import java.util.List;
 
-final class LexerResult implements ProblemContainer {
+/**
+ * Indicates that a type contains {@link ExpressionProblem}s
+ * <p />
+ * 
+ * <strong>Concurrent Semantics</strong><br />
+ * 
+ * Implementations must be thread-safe
+ */
+public interface ProblemContainer {
 
-    private final TokenStream tokenStream;
-
-    private final List<ExpressionProblem> problems;
-
-    LexerResult(TokenStream tokenStream, List<ExpressionProblem> problems) {
-        this.tokenStream = tokenStream;
-        this.problems = problems;
-    }
-
-    TokenStream getTokenStream() {
-        if (!this.problems.isEmpty()) {
-            throw new IllegalStateException("Unable to return a TokenStream when there are problems with the lex");
-        }
-
-        return this.tokenStream;
-    }
-
-    @Override
-    public List<ExpressionProblem> getProblems() {
-        return this.problems;
-    }
+    /**
+     * The collection of problems contained within this type
+     * 
+     * @return The collection of problems contained within this type
+     */
+    List<ExpressionProblem> getProblems();
 
 }

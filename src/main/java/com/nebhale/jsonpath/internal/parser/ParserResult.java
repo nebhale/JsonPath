@@ -28,7 +28,7 @@ import com.nebhale.jsonpath.internal.component.PathComponent;
  * 
  * Thread-safe
  */
-public final class ParserResult {
+public final class ParserResult implements ProblemContainer {
 
     private final PathComponent pathComponent;
 
@@ -61,11 +61,7 @@ public final class ParserResult {
         return this.pathComponent;
     }
 
-    /**
-     * The collection of problems encountered while parsing an expression
-     * 
-     * @return The collection of problems encountered while parsing an expression
-     */
+    @Override
     public List<ExpressionProblem> getProblems() {
         return this.problems;
     }

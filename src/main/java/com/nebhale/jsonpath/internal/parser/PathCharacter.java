@@ -60,7 +60,8 @@ final class PathCharacter {
         ROOT, //
         SIMPLE_NAME_CHARACTER, //
         SPACE, //
-        UNDERSCORE;
+        UNDERSCORE, //
+        WILDCARD;
     }
 
     @Override
