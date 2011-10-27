@@ -153,6 +153,10 @@ final class RecoveringPathLexer implements PathLexer {
             emitWildcard(context, c);
             context.scanner.consume();
             context.parsingState = ParsingState.BASE;
+        } else if (context.value.isEmpty() && c.isType(CharacterType.DOT)) {
+            Token token = new Token(TokenType.DEEP_WILDCARD, c.getPosition());
+            context.tokenStream.add(token);
+            context.scanner.consume();
         } else {
             context.tokenStream.add(createToken(TokenType.CHILD, context));
             context.parsingState = ParsingState.BASE;

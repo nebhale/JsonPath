@@ -64,5 +64,6 @@ public final class JsonPathTests {
         assertEquals("Sayings of the Century", JsonPath.read("$['store']['book'][0]['title']", STRING_VALID, String.class));
         assertEquals(Arrays.asList("red", "blue"), JsonPath.read("$.store.bicycle.color", STRING_VALID, List.class));
         assertEquals(Arrays.asList("city", "hybrid", "downhill", "freeride"), JsonPath.read("$.store.bicycle.style", STRING_VALID, List.class));
+        assertEquals(Arrays.asList("city", "hybrid", "downhill", "freeride"), JsonPath.read("$.store..style", STRING_VALID, List.class));
     }
 }

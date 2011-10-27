@@ -116,6 +116,14 @@ public class RecoveringPathLexerTests {
     }
 
     @Test
+    public void deepWildcard() {
+        LexerResult result = this.lexer.lex("..a");
+        assertNoProblems(result);
+        assertEquals(new Token(TokenType.DEEP_WILDCARD, 1), result.getTokenStream().remove());
+        assertEquals(new Token(TokenType.CHILD, "a", 2, 2), result.getTokenStream().remove());
+    }
+
+    @Test
     public void arrayChildQuote() {
         LexerResult result = this.lexer.lex("['array_child']");
         assertNoProblems(result);

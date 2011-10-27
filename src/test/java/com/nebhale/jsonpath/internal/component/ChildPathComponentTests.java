@@ -18,6 +18,7 @@ package com.nebhale.jsonpath.internal.component;
 
 import static com.nebhale.jsonpath.testutils.JsonUtils.NODE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
@@ -49,6 +50,11 @@ public final class ChildPathComponentTests {
     }
 
     @Test
+    public void selectDoesNotExist() {
+        assertNull(new ChildPathComponent(null, "foo").select(NODE));
+    }
+
+    @Test
     public void selectArraySingle() {
         JsonNode nodeBook = NODE.get("store").get("book");
 
@@ -77,4 +83,5 @@ public final class ChildPathComponentTests {
 
         assertEquals(expected, result);
     }
+
 }
