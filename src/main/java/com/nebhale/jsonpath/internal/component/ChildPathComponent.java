@@ -45,10 +45,12 @@ public final class ChildPathComponent extends AbstractChainedPathComponent {
             ArrayNode result = JsonNodeFactory.instance.arrayNode();
             for (JsonNode node : input) {
                 JsonNode nodeResult = selectNode(node);
-                if (nodeResult.isArray()) {
-                    result.addAll((ArrayNode) nodeResult);
-                } else {
-                    result.add(nodeResult);
+                if (nodeResult != null) {
+                    if (nodeResult.isArray()) {
+                        result.addAll((ArrayNode) nodeResult);
+                    } else {
+                        result.add(nodeResult);
+                    }
                 }
             }
             return result;

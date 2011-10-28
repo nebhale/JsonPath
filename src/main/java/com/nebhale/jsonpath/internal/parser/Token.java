@@ -55,9 +55,10 @@ final class Token {
 
     enum TokenType {
 
-        ROOT, //
         CHILD, //
+        DEEP_WILDCARD, //
         INDEX, //
+        ROOT, //
         WILDCARD
 
     }

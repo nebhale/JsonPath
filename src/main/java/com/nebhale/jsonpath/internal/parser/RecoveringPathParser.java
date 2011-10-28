@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nebhale.jsonpath.internal.component.ChildPathComponent;
+import com.nebhale.jsonpath.internal.component.DeepWildcardPathComponent;
 import com.nebhale.jsonpath.internal.component.IndexPathComponent;
 import com.nebhale.jsonpath.internal.component.PathComponent;
 import com.nebhale.jsonpath.internal.component.RootPathComponent;
@@ -83,6 +84,8 @@ public final class RecoveringPathParser implements PathParser {
 
             if (token.getType() == TokenType.CHILD) {
                 pathComponent = new ChildPathComponent(createPathComponent(expression, tokenStream, problems), token.getValue());
+            } else if (token.getType() == TokenType.DEEP_WILDCARD) {
+                pathComponent = new DeepWildcardPathComponent(createPathComponent(expression, tokenStream, problems));
             } else if (token.getType() == TokenType.INDEX) {
                 pathComponent = new IndexPathComponent(createPathComponent(expression, tokenStream, problems), token.getValue());
             } else if (token.getType() == TokenType.WILDCARD) {

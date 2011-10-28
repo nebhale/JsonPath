@@ -16,24 +16,19 @@
 
 package com.nebhale.jsonpath.internal.component;
 
+import static com.nebhale.jsonpath.testutils.JsonUtils.NODE;
+import static org.junit.Assert.assertEquals;
+
 import org.codehaus.jackson.JsonNode;
+import org.junit.Test;
 
-abstract class AbstractChainedPathComponent implements PathComponent {
+public final class DeepWildcardPathComponentTests {
 
-    private final PathComponent delegate;
+    @Test
+    public void select() {
+        JsonNode result = new DeepWildcardPathComponent(null).select(NODE);
 
-    protected AbstractChainedPathComponent(PathComponent delegate) {
-        this.delegate = delegate;
+        assertEquals(38, result.size());
     }
 
-    @Override
-    public final JsonNode get(JsonNode jsonNode) {
-        JsonNode selected = select(jsonNode);
-        if ((selected != null) && (this.delegate != null)) {
-            return this.delegate.get(selected);
-        }
-        return selected;
-    }
-
-    protected abstract JsonNode select(JsonNode jsonNode);
 }

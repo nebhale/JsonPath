@@ -82,6 +82,14 @@ public final class RecoveringPathParserTests {
     }
 
     @Test
+    public void deepWildcard() {
+        ParserResult result = this.parser.parse("$..*");
+
+        assertNoProblems(result);
+        assertEquals(38, result.getPathComponent().get(NODE).size());
+    }
+
+    @Test
     public void wildcardDotChild() {
         JsonNode nodeStore = NODE.get("store");
         ArrayNode expected = JsonNodeFactory.instance.arrayNode();
