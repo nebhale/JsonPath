@@ -18,9 +18,9 @@ package com.nebhale.jsonpath.internal.component;
 
 import java.util.Iterator;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
 /**
  * A {@link PathComponent} that handles deep wildcards
@@ -50,7 +50,7 @@ public final class DeepWildcardPathComponent extends AbstractChainedPathComponen
                 nodes.addAll(getAllNodes(node));
             }
         } else {
-            for (Iterator<String> i = root.getFieldNames(); i.hasNext();) {
+            for (Iterator<String> i = root.fieldNames(); i.hasNext();) {
                 nodes.addAll(getAllNodes(root.get(i.next())));
             }
         }

@@ -16,7 +16,7 @@
 
 package com.nebhale.jsonpath.internal.component;
 
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Represents a segment of a JSONPath expression

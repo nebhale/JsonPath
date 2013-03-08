@@ -19,9 +19,8 @@ package com.nebhale.jsonpath;
 import java.io.IOException;
 import java.util.List;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nebhale.jsonpath.internal.component.PathComponent;
 import com.nebhale.jsonpath.internal.parser.ExpressionProblem;
 import com.nebhale.jsonpath.internal.parser.ParserResult;

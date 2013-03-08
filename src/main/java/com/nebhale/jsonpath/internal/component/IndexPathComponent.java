@@ -16,10 +16,9 @@
 
 package com.nebhale.jsonpath.internal.component;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.JsonNodeFactory;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.nebhale.jsonpath.internal.util.ArrayUtils;
 
 /**

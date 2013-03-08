@@ -19,8 +19,9 @@ package com.nebhale.jsonpath.internal.component;
 import static com.nebhale.jsonpath.testutils.JsonUtils.NODE;
 import static org.junit.Assert.assertEquals;
 
-import org.codehaus.jackson.JsonNode;
 import org.junit.Test;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 public final class DeepWildcardPathComponentTests {
 
