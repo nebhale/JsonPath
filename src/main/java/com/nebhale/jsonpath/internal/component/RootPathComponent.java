@@ -16,7 +16,7 @@
 
 package com.nebhale.jsonpath.internal.component;
 
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * A {@link PathComponent} that handles the {@code $} character

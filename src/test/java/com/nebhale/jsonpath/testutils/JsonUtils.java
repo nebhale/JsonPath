@@ -20,8 +20,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public final class JsonUtils {
 

@@ -18,9 +18,9 @@ package com.nebhale.jsonpath.internal.component;
 
 import java.util.Iterator;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
 /**
  * A {@link PathComponent} that handles wildcards
@@ -43,7 +43,7 @@ public final class WildcardPathComponent extends AbstractChainedPathComponent {
         } else {
             ArrayNode result = JsonNodeFactory.instance.arrayNode();
 
-            for (Iterator<JsonNode> i = input.getElements(); i.hasNext();) {
+            for (Iterator<JsonNode> i = input.elements(); i.hasNext();) {
                 result.add(i.next());
             }
 
