@@ -16,6 +16,7 @@
 
 package com.nebhale.jsonpath;
 
+import static com.nebhale.jsonpath.testutils.JsonUtils.NODE;
 import static com.nebhale.jsonpath.testutils.JsonUtils.STRING_INVALID;
 import static com.nebhale.jsonpath.testutils.JsonUtils.STRING_VALID;
 import static org.junit.Assert.assertEquals;
@@ -28,6 +29,11 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.TextNode;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.SimpleType;
 import com.nebhale.jsonpath.internal.util.Sets;
 
 public final class JsonPathTests {
@@ -43,8 +49,35 @@ public final class JsonPathTests {
     }
 
     @Test
-    public void readStatic() {
+    public void stringInputClassOutputStatic() {
         assertNotNull(JsonPath.read("$", STRING_VALID, Map.class));
+    }
+
+    @Test
+    public void stringInputTypeReferenceOutputStatic() {
+        assertNotNull(JsonPath.read("$", STRING_VALID, new TypeReference<JsonNode>() {
+        }));
+    }
+
+    @Test
+    public void stringInputJavaTypeOutputStatic() {
+        assertNotNull(JsonPath.read("$", STRING_VALID, SimpleType.construct(Object.class)));
+    }
+
+    @Test
+    public void jsonNodeInputClassOutputStatic() {
+        assertNotNull(JsonPath.read("$", NODE, Map.class));
+    }
+
+    @Test
+    public void jsonNodeInputTypeReferenceOutputStatic() {
+        assertNotNull(JsonPath.read("$", NODE, new TypeReference<JsonNode>() {
+        }));
+    }
+
+    @Test
+    public void jsonNodeInputJavaTypeOutputStatic() {
+        assertNotNull(JsonPath.read("$", NODE, SimpleType.construct(Object.class)));
     }
 
     @Test
@@ -53,17 +86,107 @@ public final class JsonPathTests {
     }
 
     @Test(expected = InvalidJsonException.class)
-    public void readInvalid() {
-        assertNotNull(JsonPath.compile("$").read(STRING_INVALID, Map.class));
+    public void readStringInputClassOutputInvalid() {
+        JsonPath.compile("$").read(STRING_INVALID, Map.class);
+    }
+
+    @Test(expected = InvalidJsonException.class)
+    public void readStringInputTypeReferenceOutputInvalid() {
+        JsonPath.compile("$").read(STRING_INVALID, new TypeReference<JsonNode>() {
+        });
+    }
+
+    @Test(expected = InvalidJsonException.class)
+    public void readStringInputJavaTypeOutputInvalid() {
+        JsonPath.compile("$").read(STRING_INVALID, SimpleType.construct(Object.class));
     }
 
     @Test
-    public void examples() {
+    public void stringInputClassOutput() {
         assertEquals("Sayings of the Century", JsonPath.read("$.store.book[0].title", STRING_VALID, String.class));
         assertEquals(Sets.asSet("Sayings of the Century", "Sword of Honour"), JsonPath.read("$.store.book[0,1].title", STRING_VALID, Set.class));
         assertEquals("Sayings of the Century", JsonPath.read("$['store']['book'][0]['title']", STRING_VALID, String.class));
         assertEquals(Arrays.asList("red", "blue"), JsonPath.read("$.store.bicycle.color", STRING_VALID, List.class));
         assertEquals(Arrays.asList("city", "hybrid", "downhill", "freeride"), JsonPath.read("$.store.bicycle.style", STRING_VALID, List.class));
         assertEquals(Arrays.asList("city", "hybrid", "downhill", "freeride"), JsonPath.read("$.store..style", STRING_VALID, List.class));
+    }
+
+    @Test
+    public void stringInputTypeReferenceOutput() {
+        assertEquals(new TextNode("Sayings of the Century"), JsonPath.read("$.store.book[0].title", STRING_VALID, new TypeReference<JsonNode>() {
+        }));
+        assertEquals(Sets.asSet(new TextNode("Sayings of the Century"), new TextNode("Sword of Honour")),
+            JsonPath.read("$.store.book[0,1].title", STRING_VALID, new TypeReference<Set<JsonNode>>() {
+            }));
+        assertEquals(new TextNode("Sayings of the Century"),
+            JsonPath.read("$['store']['book'][0]['title']", STRING_VALID, new TypeReference<JsonNode>() {
+            }));
+        assertEquals(Arrays.asList(new TextNode("red"), new TextNode("blue")),
+            JsonPath.read("$.store.bicycle.color", STRING_VALID, new TypeReference<List<JsonNode>>() {
+            }));
+        assertEquals(Arrays.asList(new TextNode("city"), new TextNode("hybrid"), new TextNode("downhill"), new TextNode("freeride")),
+            JsonPath.read("$.store.bicycle.style", STRING_VALID, new TypeReference<List<JsonNode>>() {
+            }));
+        assertEquals(Arrays.asList(new TextNode("city"), new TextNode("hybrid"), new TextNode("downhill"), new TextNode("freeride")),
+            JsonPath.read("$.store..style", STRING_VALID, new TypeReference<List<JsonNode>>() {
+            }));
+    }
+
+    @Test
+    public void stringInputJavaTypeOutput() {
+        assertEquals("Sayings of the Century", JsonPath.read("$.store.book[0].title", STRING_VALID, SimpleType.construct(String.class)));
+        assertEquals(Sets.asSet("Sayings of the Century", "Sword of Honour"),
+            JsonPath.read("$.store.book[0,1].title", STRING_VALID, CollectionType.construct(Set.class, SimpleType.construct(String.class))));
+        assertEquals("Sayings of the Century", JsonPath.read("$['store']['book'][0]['title']", STRING_VALID, SimpleType.construct(String.class)));
+        assertEquals(Arrays.asList("red", "blue"),
+            JsonPath.read("$.store.bicycle.color", STRING_VALID, CollectionType.construct(List.class, SimpleType.construct(String.class))));
+        assertEquals(Arrays.asList("city", "hybrid", "downhill", "freeride"),
+            JsonPath.read("$.store.bicycle.style", STRING_VALID, CollectionType.construct(List.class, SimpleType.construct(String.class))));
+        assertEquals(Arrays.asList("city", "hybrid", "downhill", "freeride"),
+            JsonPath.read("$.store..style", STRING_VALID, CollectionType.construct(List.class, SimpleType.construct(String.class))));
+    }
+
+    @Test
+    public void jsonNodeInputClassOutput() {
+        assertEquals("Sayings of the Century", JsonPath.read("$.store.book[0].title", NODE, String.class));
+        assertEquals(Sets.asSet("Sayings of the Century", "Sword of Honour"), JsonPath.read("$.store.book[0,1].title", NODE, Set.class));
+        assertEquals("Sayings of the Century", JsonPath.read("$['store']['book'][0]['title']", NODE, String.class));
+        assertEquals(Arrays.asList("red", "blue"), JsonPath.read("$.store.bicycle.color", NODE, List.class));
+        assertEquals(Arrays.asList("city", "hybrid", "downhill", "freeride"), JsonPath.read("$.store.bicycle.style", NODE, List.class));
+        assertEquals(Arrays.asList("city", "hybrid", "downhill", "freeride"), JsonPath.read("$.store..style", NODE, List.class));
+    }
+
+    @Test
+    public void jsonNodeInputTypeReferenceOutput() {
+        assertEquals(new TextNode("Sayings of the Century"), JsonPath.read("$.store.book[0].title", NODE, new TypeReference<JsonNode>() {
+        }));
+        assertEquals(Sets.asSet(new TextNode("Sayings of the Century"), new TextNode("Sword of Honour")),
+            JsonPath.read("$.store.book[0,1].title", NODE, new TypeReference<Set<JsonNode>>() {
+            }));
+        assertEquals(new TextNode("Sayings of the Century"), JsonPath.read("$['store']['book'][0]['title']", NODE, new TypeReference<JsonNode>() {
+        }));
+        assertEquals(Arrays.asList(new TextNode("red"), new TextNode("blue")),
+            JsonPath.read("$.store.bicycle.color", NODE, new TypeReference<List<JsonNode>>() {
+            }));
+        assertEquals(Arrays.asList(new TextNode("city"), new TextNode("hybrid"), new TextNode("downhill"), new TextNode("freeride")),
+            JsonPath.read("$.store.bicycle.style", NODE, new TypeReference<List<JsonNode>>() {
+            }));
+        assertEquals(Arrays.asList(new TextNode("city"), new TextNode("hybrid"), new TextNode("downhill"), new TextNode("freeride")),
+            JsonPath.read("$.store..style", NODE, new TypeReference<List<JsonNode>>() {
+            }));
+    }
+
+    @Test
+    public void jsonNodeInputJavaTypeOutput() {
+        assertEquals("Sayings of the Century", JsonPath.read("$.store.book[0].title", NODE, SimpleType.construct(String.class)));
+        assertEquals(Sets.asSet("Sayings of the Century", "Sword of Honour"),
+            JsonPath.read("$.store.book[0,1].title", NODE, CollectionType.construct(Set.class, SimpleType.construct(String.class))));
+        assertEquals("Sayings of the Century", JsonPath.read("$['store']['book'][0]['title']", NODE, SimpleType.construct(String.class)));
+        assertEquals(Arrays.asList("red", "blue"),
+            JsonPath.read("$.store.bicycle.color", NODE, CollectionType.construct(List.class, SimpleType.construct(String.class))));
+        assertEquals(Arrays.asList("city", "hybrid", "downhill", "freeride"),
+            JsonPath.read("$.store.bicycle.style", NODE, CollectionType.construct(List.class, SimpleType.construct(String.class))));
+        assertEquals(Arrays.asList("city", "hybrid", "downhill", "freeride"),
+            JsonPath.read("$.store..style", NODE, CollectionType.construct(List.class, SimpleType.construct(String.class))));
     }
 }
