@@ -21,11 +21,19 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+
 	<groupId>com.nebhale.jsonpath</groupId>
 	<artifactId>jsonpath</artifactId>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<name>JSONPath Java Implementation</name>
+	<description>A pure Java JsonPath implementation</description>
+	<url>https://github.com/nebhale/JsonPath</url>
 
 	<properties>
 		<jackson.version>2.1.2</jackson.version>
@@ -68,11 +76,35 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.6</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -83,6 +115,35 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-enforcer-plugin</artifactId>
+										<versionRange>[1,)</versionRange>
+										<goals>
+											<goal>enforce</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore/>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<licenses>
@@ -102,5 +163,18 @@
 		<connection>https://nebhale@github.com/nebhale/JsonPath.git</connection>
 		<url>https://github.com/nebhale/JsonPath</url>
 	</scm>
+
+	<developers>
+		<developer>
+			<id>nebhale</id>
+			<name>Ben Hale</name>
+			<email>nebhale@nebhale.com</email>
+		</developer>
+	</developers>
+
+	<ciManagement>
+		<system>Travis</system>
+		<url>https://travis-ci.org/nebhale/JsonPath</url>
+	</ciManagement>
 
 </project>
