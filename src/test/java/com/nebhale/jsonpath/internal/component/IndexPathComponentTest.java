@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
-public final class IndexPathComponentTests {
+public final class IndexPathComponentTest {
 
     private static final JsonNode NODE_BOOK = NODE.get("store").get("book");
 

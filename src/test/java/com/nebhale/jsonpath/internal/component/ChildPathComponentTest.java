@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
-public final class ChildPathComponentTests {
+public final class ChildPathComponentTest {
 
     @Test
     public void selectSingle() {

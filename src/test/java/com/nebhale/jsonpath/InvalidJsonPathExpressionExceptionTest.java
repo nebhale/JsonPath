@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package com.nebhale.jsonpath.internal.component;
+package com.nebhale.jsonpath;
 
-import static com.nebhale.jsonpath.testutils.JsonUtils.NODE;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public final class RootPathComponentTests {
-
-    private final RootPathComponent pathComponent = new RootPathComponent(null);
+public final class InvalidJsonPathExpressionExceptionTest {
 
     @Test
-    public void select() {
-        assertSame(NODE, this.pathComponent.select(NODE));
+    public void test() {
+        String message = "message";
+        assertEquals(message, new InvalidJsonPathExpressionException(message).getMessage());
     }
 
 }

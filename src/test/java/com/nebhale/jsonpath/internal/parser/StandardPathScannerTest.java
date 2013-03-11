@@ -27,7 +27,7 @@ import org.junit.Test;
 import com.nebhale.jsonpath.internal.parser.PathCharacter.CharacterType;
 import com.nebhale.jsonpath.internal.util.Sets;
 
-public final class StandardPathScannerTests {
+public final class StandardPathScannerTest {
 
     @Test
     public void test() {

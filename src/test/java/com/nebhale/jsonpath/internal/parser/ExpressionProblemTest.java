@@ -14,18 +14,28 @@
  * limitations under the License.
  */
 
-package com.nebhale.jsonpath;
+package com.nebhale.jsonpath.internal.parser;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public final class InvalidJsonPathExpressionExceptionTests {
+public class ExpressionProblemTest {
 
     @Test
-    public void test() {
-        String message = "message";
-        assertEquals(message, new InvalidJsonPathExpressionException(message).getMessage());
+    public void problemPosition() {
+        String output = new ExpressionProblem("/token1/token2/", 7, "test-message").toString();
+        assertEquals("test-message\n" + //
+            "/token1/token2/\n" + //
+            "-------^\n", output);
+    }
+
+    @Test
+    public void startAndStopPosition() {
+        String output = new ExpressionProblem("/token1/token2/", 8, 13, "test-message").toString();
+        assertEquals("test-message\n" + //
+            "/token1/token2/\n" + //
+            "--------^____^\n", output);
     }
 
 }

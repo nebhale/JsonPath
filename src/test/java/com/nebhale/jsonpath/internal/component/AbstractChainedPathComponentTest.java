@@ -25,7 +25,7 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public final class AbstraktChainedPathComponentTest {
+public final class AbstractChainedPathComponentTest {
 
     private final PathComponent delegate = mock(PathComponent.class);
 

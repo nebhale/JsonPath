@@ -14,28 +14,22 @@
  * limitations under the License.
  */
 
-package com.nebhale.jsonpath.internal.parser;
+package com.nebhale.jsonpath.internal.component;
 
+import static com.nebhale.jsonpath.testutils.JsonUtils.NODE;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class ExpressionProblemTests {
+import com.fasterxml.jackson.databind.JsonNode;
+
+public final class DeepWildcardPathComponentTest {
 
     @Test
-    public void problemPosition() {
-        String output = new ExpressionProblem("/token1/token2/", 7, "test-message").toString();
-        assertEquals("test-message\n" + //
-            "/token1/token2/\n" + //
-            "-------^\n", output);
-    }
+    public void select() {
+        JsonNode result = new DeepWildcardPathComponent(null).select(NODE);
 
-    @Test
-    public void startAndStopPosition() {
-        String output = new ExpressionProblem("/token1/token2/", 8, 13, "test-message").toString();
-        assertEquals("test-message\n" + //
-            "/token1/token2/\n" + //
-            "--------^____^\n", output);
+        assertEquals(38, result.size());
     }
 
 }

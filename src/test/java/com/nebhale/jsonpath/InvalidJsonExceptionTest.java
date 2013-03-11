@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package com.nebhale.jsonpath.internal.component;
+package com.nebhale.jsonpath;
 
-import static com.nebhale.jsonpath.testutils.JsonUtils.NODE;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-public final class DeepWildcardPathComponentTests {
+public final class InvalidJsonExceptionTest {
 
     @Test
-    public void select() {
-        JsonNode result = new DeepWildcardPathComponent(null).select(NODE);
-
-        assertEquals(38, result.size());
+    public void test() {
+        Exception cause = new Exception();
+        assertSame(cause, new InvalidJsonException(cause).getCause());
     }
-
 }

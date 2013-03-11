@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
-public final class RecoveringPathParserTests {
+public final class RecoveringPathParserTest {
 
     private final RecoveringPathParser parser = new RecoveringPathParser();
 
