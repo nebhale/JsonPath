@@ -24,7 +24,7 @@ import org.junit.Test;
 
 import com.nebhale.jsonpath.internal.parser.Token.TokenType;
 
-public class RecoveringPathLexerTests {
+public class RecoveringPathLexerTest {
 
     private final RecoveringPathLexer lexer = new RecoveringPathLexer();
 

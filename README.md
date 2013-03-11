@@ -1,3 +1,5 @@
+# JsonPath [![Build Status](https://travis-ci.org/nebhale/JsonPath.png?branch=master)](https://travis-ci.org/nebhale/JsonPath)
+
 JsonPath is a Java implementation of the JSONPath specification.  Details about the specification can be found at <http://goessner.net/articles/JsonPath/>. This implementation is designed to mimic the [Java `Pattern` class][pattern] and it's lifecycle.
 
 [pattern]: http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html
@@ -124,7 +126,7 @@ Here is a complete overview of the JSONPath syntax:
 | `$..*`                   | All JSON nodes                      |
 
 # Apache License #
-Version 2.0, January 2004  
+Version 2.0, January 2004
 <http://www.apache.org/licenses/>
 
 TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION

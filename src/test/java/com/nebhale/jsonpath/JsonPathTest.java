@@ -36,7 +36,7 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.SimpleType;
 import com.nebhale.jsonpath.internal.util.Sets;
 
-public final class JsonPathTests {
+public final class JsonPathTest {
 
     @Test
     public void compileValid() {
