@@ -16,9 +16,8 @@
 
 package com.nebhale.jsonpath.internal.parser;
 
-
 /**
- * A parser for parsing {@link http://goessner.net/articles/JsonPath/ JSONPath expressions}.
+ * A parser for parsing <a href="http://goessner.net/articles/JsonPath/">JSONPath expressions</a>.
  * <p />
  * 
  * <strong>Concurrent Semantics</strong><br />
@@ -30,7 +29,7 @@ package com.nebhale.jsonpath.internal.parser;
 public interface PathParser {
 
     /**
-     * Parses a JSONPath expression into a {@link PathComponent}
+     * Parses a JSONPath expression into a {@link ParserResult}
      * 
      * @param expression The JSONPath expression to parse
      * 

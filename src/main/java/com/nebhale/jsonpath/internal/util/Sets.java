@@ -38,7 +38,6 @@ public final class Sets {
      * @param items The items to create the set from
      * @return The set created from the collection of items
      */
-    @SafeVarargs
     public static <T> Set<T> asSet(T... items) {
         Set<T> set = new HashSet<T>();
         for (T item : items) {
