@@ -29,8 +29,8 @@ import com.nebhale.jsonpath.internal.parser.ParserResult;
 import com.nebhale.jsonpath.internal.parser.RecoveringPathParser;
 
 /**
- * A compiled representation of a {@link http://goessner.net/articles/JsonPath/ JSONPath expression}. JSONPath is a way
- * of using an XPath-like syntax to retrieve content from a JSON payload. The design of this class is intended to
+ * A compiled representation of a <a href="http://goessner.net/articles/JsonPath/">JSONPath expression</a>. JSONPath is
+ * a way of using an XPath-like syntax to retrieve content from a JSON payload. The design of this class is intended to
  * resemble the Java {@link java.util.regex.Pattern} class.
  * <p />
  * A JSONPath expression, specified as a string, must first be compiled into an instance of this class. The resulting
@@ -73,8 +73,8 @@ public final class JsonPath {
     /**
      * A short-cut that encapsulates the {@link #compile(String) compilation} of a JSONPath expression and then the read
      * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
-     * {@link #compile(String)} followed by a call to {@link #read(String)}. There is no performance benefit to calling
-     * this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
+     * {@link #compile(String)} followed by a call to {@link #read(String, Class)}. There is no performance benefit to
+     * calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
      * 
      * @param expression The expression to use to read content
      * @param json The JSON payload to retrieve data from
@@ -91,8 +91,9 @@ public final class JsonPath {
     /**
      * A short-cut that encapsulates the {@link #compile(String) compilation} of a JSONPath expression and then the read
      * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
-     * {@link #compile(String)} followed by a call to {@link #read(String)}. There is no performance benefit to calling
-     * this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
+     * {@link #compile(String)} followed by a call to {@link #read(String, TypeReference)}. There is no performance
+     * benefit to calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath}
+     * expression.
      * 
      * @param expression The expression to use to read content
      * @param json The JSON payload to retrieve data from
@@ -109,8 +110,8 @@ public final class JsonPath {
     /**
      * A short-cut that encapsulates the {@link #compile(String) compilation} of a JSONPath expression and then the read
      * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
-     * {@link #compile(String)} followed by a call to {@link #read(String)}. There is no performance benefit to calling
-     * this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
+     * {@link #compile(String)} followed by a call to {@link #read(String, JavaType)}. There is no performance benefit
+     * to calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
      * 
      * @param expression The expression to use to read content
      * @param json The JSON payload to retrieve data from
@@ -127,8 +128,8 @@ public final class JsonPath {
     /**
      * A short-cut that encapsulates the {@link #compile(String) compilation} of a JSONPath expression and then the read
      * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
-     * {@link #compile(String)} followed by a call to {@link #read(String)}. There is no performance benefit to calling
-     * this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
+     * {@link #compile(String)} followed by a call to {@link #read(JsonNode, Class)}. There is no performance benefit to
+     * calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
      * 
      * @param expression The expression to use to read content
      * @param json The JSON payload to retrieve data from
@@ -143,8 +144,9 @@ public final class JsonPath {
     /**
      * A short-cut that encapsulates the {@link #compile(String) compilation} of a JSONPath expression and then the read
      * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
-     * {@link #compile(String)} followed by a call to {@link #read(String)}. There is no performance benefit to calling
-     * this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
+     * {@link #compile(String)} followed by a call to {@link #read(JsonNode, TypeReference)}. There is no performance
+     * benefit to calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath}
+     * expression.
      * 
      * @param expression The expression to use to read content
      * @param json The JSON payload to retrieve data from
@@ -159,8 +161,8 @@ public final class JsonPath {
     /**
      * A short-cut that encapsulates the {@link #compile(String) compilation} of a JSONPath expression and then the read
      * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
-     * {@link #compile(String)} followed by a call to {@link #read(String)}. There is no performance benefit to calling
-     * this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
+     * {@link #compile(String)} followed by a call to {@link #read(JsonNode, JavaType)}. There is no performance benefit
+     * to calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
      * 
      * @param expression The expression to use to read content
      * @param json The JSON payload to retrieve data from
