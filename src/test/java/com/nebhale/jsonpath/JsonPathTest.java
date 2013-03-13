@@ -81,8 +81,35 @@ public final class JsonPathTest {
     }
 
     @Test
-    public void readValid() {
+    public void readStringInputClassOutput() {
         assertNotNull(JsonPath.compile("$").read(STRING_VALID, Map.class));
+    }
+
+    @Test
+    public void readStringInputTypeRefrenceOutput() {
+        assertNotNull(JsonPath.compile("$").read(STRING_VALID, new TypeReference<JsonNode>() {
+        }));
+    }
+
+    @Test
+    public void readStringInputJavaTypeOutput() {
+        assertNotNull(JsonPath.compile("$").read(STRING_VALID, SimpleType.construct(Object.class)));
+    }
+
+    @Test
+    public void jsonNodeStringInputClassOutput() {
+        assertNotNull(JsonPath.compile("$").read(NODE, Map.class));
+    }
+
+    @Test
+    public void jsonNodeStringInputTypeRefrenceOutput() {
+        assertNotNull(JsonPath.compile("$").read(NODE, new TypeReference<JsonNode>() {
+        }));
+    }
+
+    @Test
+    public void jsonNodeStringInputJavaTypeOutput() {
+        assertNotNull(JsonPath.compile("$").read(NODE, SimpleType.construct(Object.class)));
     }
 
     @Test(expected = InvalidJsonException.class)

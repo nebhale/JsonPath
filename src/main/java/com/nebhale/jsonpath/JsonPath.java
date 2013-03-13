@@ -45,6 +45,8 @@ import com.nebhale.jsonpath.internal.parser.RecoveringPathParser;
  */
 public final class JsonPath {
 
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     private final PathComponent pathComponent;
 
     private JsonPath(PathComponent pathComponent) {
@@ -85,7 +87,7 @@ public final class JsonPath {
      * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
      */
     public static <T> T read(String expression, String json, Class<T> expectedReturnType) {
-        return compile(expression).read(json, expectedReturnType);
+        return read(expression, json, expectedReturnType, OBJECT_MAPPER);
     }
 
     /**
@@ -104,7 +106,7 @@ public final class JsonPath {
      * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
      */
     public static <T> T read(String expression, String json, TypeReference<?> expectedReturnType) {
-        return compile(expression).read(json, expectedReturnType);
+        return read(expression, json, expectedReturnType, OBJECT_MAPPER);
     }
 
     /**
@@ -122,7 +124,65 @@ public final class JsonPath {
      * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
      */
     public static <T> T read(String expression, String json, JavaType expectedReturnType) {
-        return compile(expression).read(json, expectedReturnType);
+        return read(expression, json, expectedReturnType, OBJECT_MAPPER);
+    }
+
+    /**
+     * A short-cut that encapsulates the {@link #compile(String) compilation} of a JSONPath expression and then the read
+     * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
+     * {@link #compile(String)} followed by a call to {@link #read(String, Class)}. There is no performance benefit to
+     * calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
+     * 
+     * @param expression The expression to use to read content
+     * @param json The JSON payload to retrieve data from
+     * @param expectedReturnType The type that the return value is expected to be
+     * @param objectMapper The objectMapper to use when converting the input and output values
+     * 
+     * @return The content read from the JSON payload
+     * 
+     * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
+     */
+    public static <T> T read(String expression, String json, Class<T> expectedReturnType, ObjectMapper objectMapper) {
+        return compile(expression).read(json, expectedReturnType, objectMapper);
+    }
+
+    /**
+     * A short-cut that encapsulates the {@link #compile(String) compilation} of a JSONPath expression and then the read
+     * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
+     * {@link #compile(String)} followed by a call to {@link #read(String, TypeReference)}. There is no performance
+     * benefit to calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath}
+     * expression.
+     * 
+     * @param expression The expression to use to read content
+     * @param json The JSON payload to retrieve data from
+     * @param expectedReturnType The type that the return value is expected to be
+     * @param objectMapper The objectMapper to use when converting the input and output values
+     * 
+     * @return The content read from the JSON payload
+     * 
+     * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
+     */
+    public static <T> T read(String expression, String json, TypeReference<?> expectedReturnType, ObjectMapper objectMapper) {
+        return compile(expression).read(json, expectedReturnType, objectMapper);
+    }
+
+    /**
+     * A short-cut that encapsulates the {@link #compile(String) compilation} of a JSONPath expression and then the read
+     * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
+     * {@link #compile(String)} followed by a call to {@link #read(String, JavaType)}. There is no performance benefit
+     * to calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
+     * 
+     * @param expression The expression to use to read content
+     * @param json The JSON payload to retrieve data from
+     * @param expectedReturnType The type that the return value is expected to be
+     * @param objectMapper The objectMapper to use when converting the input and output values
+     * 
+     * @return The content read from the JSON payload
+     * 
+     * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
+     */
+    public static <T> T read(String expression, String json, JavaType expectedReturnType, ObjectMapper objectMapper) {
+        return compile(expression).read(json, expectedReturnType, objectMapper);
     }
 
     /**
@@ -138,7 +198,7 @@ public final class JsonPath {
      * @return The content read from the JSON payload
      */
     public static <T> T read(String expression, JsonNode json, Class<T> expectedReturnType) {
-        return compile(expression).read(json, expectedReturnType);
+        return read(expression, json, expectedReturnType, OBJECT_MAPPER);
     }
 
     /**
@@ -155,7 +215,7 @@ public final class JsonPath {
      * @return The content read from the JSON payload
      */
     public static <T> T read(String expression, JsonNode json, TypeReference<?> expectedReturnType) {
-        return compile(expression).read(json, expectedReturnType);
+        return read(expression, json, expectedReturnType, OBJECT_MAPPER);
     }
 
     /**
@@ -171,7 +231,59 @@ public final class JsonPath {
      * @return The content read from the JSON payload
      */
     public static <T> T read(String expression, JsonNode json, JavaType expectedReturnType) {
-        return compile(expression).read(json, expectedReturnType);
+        return read(expression, json, expectedReturnType, OBJECT_MAPPER);
+    }
+
+    /**
+     * A short-cut that encapsulates the {@link #compile(String) compilation} of a JSONPath expression and then the read
+     * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
+     * {@link #compile(String)} followed by a call to {@link #read(JsonNode, Class)}. There is no performance benefit to
+     * calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
+     * 
+     * @param expression The expression to use to read content
+     * @param json The JSON payload to retrieve data from
+     * @param expectedReturnType The type that the return value is expected to be
+     * @param objectMapper The objectMapper to use when converting the output value
+     * 
+     * @return The content read from the JSON payload
+     */
+    public static <T> T read(String expression, JsonNode json, Class<T> expectedReturnType, ObjectMapper objectMapper) {
+        return compile(expression).read(json, expectedReturnType, objectMapper);
+    }
+
+    /**
+     * A short-cut that encapsulates the {@link #compile(String) compilation} of a JSONPath expression and then the read
+     * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
+     * {@link #compile(String)} followed by a call to {@link #read(JsonNode, TypeReference)}. There is no performance
+     * benefit to calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath}
+     * expression.
+     * 
+     * @param expression The expression to use to read content
+     * @param json The JSON payload to retrieve data from
+     * @param expectedReturnType The type that the return value is expected to be
+     * @param objectMapper The objectMapper to use when converting the output value
+     * 
+     * @return The content read from the JSON payload
+     */
+    public static <T> T read(String expression, JsonNode json, TypeReference<?> expectedReturnType, ObjectMapper objectMapper) {
+        return compile(expression).read(json, expectedReturnType, objectMapper);
+    }
+
+    /**
+     * A short-cut that encapsulates the {@link #compile(String) compilation} of a JSONPath expression and then the read
+     * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
+     * {@link #compile(String)} followed by a call to {@link #read(JsonNode, JavaType)}. There is no performance benefit
+     * to calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
+     * 
+     * @param expression The expression to use to read content
+     * @param json The JSON payload to retrieve data from
+     * @param expectedReturnType The type that the return value is expected to be
+     * @param objectMapper The objectMapper to use when converting the output value
+     * 
+     * @return The content read from the JSON payload
+     */
+    public static <T> T read(String expression, JsonNode json, JavaType expectedReturnType, ObjectMapper objectMapper) {
+        return compile(expression).read(json, expectedReturnType, objectMapper);
     }
 
     /**
@@ -185,13 +297,7 @@ public final class JsonPath {
      * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
      */
     public <T> T read(String json, Class<T> expectedReturnType) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode tree = objectMapper.readTree(json);
-            return read(tree, expectedReturnType);
-        } catch (IOException e) {
-            throw new InvalidJsonException(e);
-        }
+        return read(json, expectedReturnType, OBJECT_MAPPER);
     }
 
     /**
@@ -205,13 +311,7 @@ public final class JsonPath {
      * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
      */
     public <T> T read(String json, TypeReference<?> expectedReturnType) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode tree = objectMapper.readTree(json);
-            return read(tree, expectedReturnType);
-        } catch (IOException e) {
-            throw new InvalidJsonException(e);
-        }
+        return read(json, expectedReturnType, OBJECT_MAPPER);
     }
 
     /**
@@ -225,10 +325,64 @@ public final class JsonPath {
      * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
      */
     public <T> T read(String json, JavaType expectedReturnType) {
+        return read(json, expectedReturnType, OBJECT_MAPPER);
+    }
+
+    /**
+     * Reads content from a JSON payload based on the expression compiled into this instance
+     * 
+     * @param json The JSON payload to retrieve data from
+     * @param expectedReturnType The type that the return value is expected to be
+     * @param objectMapper The objectMapper to use when converting the input and output values
+     * 
+     * @return The content read from the JSON payload
+     * 
+     * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
+     */
+    public <T> T read(String json, Class<T> expectedReturnType, ObjectMapper objectMapper) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
             JsonNode tree = objectMapper.readTree(json);
-            return read(tree, expectedReturnType);
+            return read(tree, expectedReturnType, objectMapper);
+        } catch (IOException e) {
+            throw new InvalidJsonException(e);
+        }
+    }
+
+    /**
+     * Reads content from a JSON payload based on the expression compiled into this instance
+     * 
+     * @param json The JSON payload to retrieve data from
+     * @param expectedReturnType The type that the return value is expected to be
+     * @param objectMapper The objectMapper to use when converting the input and output values
+     * 
+     * @return The content read from the JSON payload
+     * 
+     * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
+     */
+    public <T> T read(String json, TypeReference<?> expectedReturnType, ObjectMapper objectMapper) {
+        try {
+            JsonNode tree = objectMapper.readTree(json);
+            return read(tree, expectedReturnType, objectMapper);
+        } catch (IOException e) {
+            throw new InvalidJsonException(e);
+        }
+    }
+
+    /**
+     * Reads content from a JSON payload based on the expression compiled into this instance
+     * 
+     * @param json The JSON payload to retrieve data from
+     * @param expectedReturnType The type that the return value is expected to be
+     * @param objectMapper The objectMapper to use when converting the input and output values
+     * 
+     * @return The content read from the JSON payload
+     * 
+     * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
+     */
+    public <T> T read(String json, JavaType expectedReturnType, ObjectMapper objectMapper) {
+        try {
+            JsonNode tree = objectMapper.readTree(json);
+            return read(tree, expectedReturnType, objectMapper);
         } catch (IOException e) {
             throw new InvalidJsonException(e);
         }
@@ -243,9 +397,7 @@ public final class JsonPath {
      * @return The content read from the JSON payload
      */
     public <T> T read(JsonNode json, Class<T> expectedReturnType) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode result = this.pathComponent.get(json);
-        return objectMapper.convertValue(result, expectedReturnType);
+        return read(json, expectedReturnType, OBJECT_MAPPER);
     }
 
     /**
@@ -257,9 +409,7 @@ public final class JsonPath {
      * @return The content read from the JSON payload
      */
     public <T> T read(JsonNode json, TypeReference<?> expectedReturnType) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode result = this.pathComponent.get(json);
-        return objectMapper.convertValue(result, expectedReturnType);
+        return read(json, expectedReturnType, OBJECT_MAPPER);
     }
 
     /**
@@ -271,7 +421,47 @@ public final class JsonPath {
      * @return The content read from the JSON payload
      */
     public <T> T read(JsonNode json, JavaType expectedReturnType) {
-        ObjectMapper objectMapper = new ObjectMapper();
+        return read(json, expectedReturnType, OBJECT_MAPPER);
+    }
+
+    /**
+     * Reads content from a JSON payload based on the expression compiled into this instance
+     * 
+     * @param json The JSON payload to retrieve data from
+     * @param expectedReturnType The type that the return value is expected to be
+     * @param objectMapper The objectMapper to use when converting output value
+     * 
+     * @return The content read from the JSON payload
+     */
+    public <T> T read(JsonNode json, Class<T> expectedReturnType, ObjectMapper objectMapper) {
+        JsonNode result = this.pathComponent.get(json);
+        return objectMapper.convertValue(result, expectedReturnType);
+    }
+
+    /**
+     * Reads content from a JSON payload based on the expression compiled into this instance
+     * 
+     * @param json The JSON payload to retrieve data from
+     * @param expectedReturnType The type that the return value is expected to be
+     * @param objectMapper The objectMapper to use when converting output value
+     * 
+     * @return The content read from the JSON payload
+     */
+    public <T> T read(JsonNode json, TypeReference<?> expectedReturnType, ObjectMapper objectMapper) {
+        JsonNode result = this.pathComponent.get(json);
+        return objectMapper.convertValue(result, expectedReturnType);
+    }
+
+    /**
+     * Reads content from a JSON payload based on the expression compiled into this instance
+     * 
+     * @param json The JSON payload to retrieve data from
+     * @param expectedReturnType The type that the return value is expected to be
+     * @param objectMapper The objectMapper to use when converting output value
+     * 
+     * @return The content read from the JSON payload
+     */
+    public <T> T read(JsonNode json, JavaType expectedReturnType, ObjectMapper objectMapper) {
         JsonNode result = this.pathComponent.get(json);
         return objectMapper.convertValue(result, expectedReturnType);
     }

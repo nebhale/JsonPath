@@ -114,16 +114,16 @@ Here is a complete overview of the JSONPath syntax:
 
 | JSONPath | Result |
 | :------- | :----- |
-| `$.store.book[*].author` | The authors of all books            |
-| `$..author`              | All authors                         |
-| `$.store.*`              | All things, both books and bicycles |
-| `$.store..price`         | The price of everything             |
-| `$..book[2]`             | The third book                      |
-| `$..book[(@.length-1)]`  | The last book                       |
-| `$..book[0,1]`           | The first two books                 |
-| `$..book[?(@.isbn)]`     | All books with an ISBN number       |
-| `$..book[?(@.price<10)]` | All books cheaper than 10           |
-| `$..*`                   | All JSON nodes                      |
+| `$.store.book[*].author`   | The authors of all books            |
+| `$..author`                | All authors                         |
+| `$.store.*`                | All things, both books and bicycles |
+| `$.store..price`           | The price of everything             |
+| `$..book[2]`               | The third book                      |
+| `$..book[(@.length - 1)]`  | The last book                       |
+| `$..book[0,1]`             | The first two books                 |
+| `$..book[?(@.isbn)]`       | All books with an ISBN number       |
+| `$..book[?(@.price < 10)]` | All books cheaper than 10           |
+| `$..*`                     | All JSON nodes                      |
 
 # Tag Verification
 
