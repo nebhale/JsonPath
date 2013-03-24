@@ -66,4 +66,9 @@ public final class ParserResult implements ProblemContainer {
         return this.problems;
     }
 
+    @Override
+    public String toString() {
+        return "ParserResult [pathComponent=" + this.pathComponent + ", problems=" + this.problems + "]";
+    }
+
 }

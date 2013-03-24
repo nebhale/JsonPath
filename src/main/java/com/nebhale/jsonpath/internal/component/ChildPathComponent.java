@@ -16,6 +16,8 @@
 
 package com.nebhale.jsonpath.internal.component;
 
+import java.util.Arrays;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -69,4 +71,10 @@ public final class ChildPathComponent extends AbstractChainedPathComponent {
             return result;
         }
     }
+
+    @Override
+    public String toString() {
+        return "ChildPathComponent [names=" + Arrays.toString(this.names) + "]";
+    }
+
 }

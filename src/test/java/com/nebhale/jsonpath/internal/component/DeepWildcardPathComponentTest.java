@@ -32,4 +32,9 @@ public final class DeepWildcardPathComponentTest {
         assertEquals(38, result.size());
     }
 
+    @Test
+    public void testToString() {
+        assertEquals("DeepWildcardPathComponent []", new DeepWildcardPathComponent(null).toString());
+    }
+
 }

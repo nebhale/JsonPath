@@ -17,6 +17,7 @@
 package com.nebhale.jsonpath.internal.component;
 
 import static com.nebhale.jsonpath.testutils.JsonUtils.NODE;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
@@ -28,6 +29,11 @@ public final class RootPathComponentTest {
     @Test
     public void select() {
         assertSame(NODE, this.pathComponent.select(NODE));
+    }
+
+    @Test
+    public void testToString() {
+        assertEquals("RootPathComponent []", new RootPathComponent(null).toString());
     }
 
 }

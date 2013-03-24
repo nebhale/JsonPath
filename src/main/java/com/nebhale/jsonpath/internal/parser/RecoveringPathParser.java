@@ -97,4 +97,10 @@ public final class RecoveringPathParser implements PathParser {
 
         return pathComponent;
     }
+
+    @Override
+    public String toString() {
+        return "RecoveringPathParser []";
+    }
+
 }

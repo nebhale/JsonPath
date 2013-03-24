@@ -85,4 +85,9 @@ public final class ChildPathComponentTest {
         assertEquals(expected, result);
     }
 
+    @Test
+    public void testToString() {
+        assertEquals("ChildPathComponent [names=[name-1, name-2]]", new ChildPathComponent(null, "name-1,name-2").toString());
+    }
+
 }

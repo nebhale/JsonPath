@@ -227,6 +227,11 @@ final class RecoveringPathLexer implements PathLexer {
         QUOTE_CLOSE
     }
 
+    @Override
+    public String toString() {
+        return "RecoveringPathLexer []";
+    }
+
     private static class LexerContext {
 
         private final String expression;
@@ -244,6 +249,12 @@ final class RecoveringPathLexer implements PathLexer {
         private LexerContext(String expression) {
             this.expression = expression;
             this.scanner = new StandardPathScanner(expression);
+        }
+
+        @Override
+        public String toString() {
+            return "LexerContext [expression=" + this.expression + ", parsingState=" + this.parsingState + ", problems=" + this.problems
+                + ", scanner=" + this.scanner + ", tokenStream=" + this.tokenStream + ", value=" + this.value + "]";
         }
 
     }

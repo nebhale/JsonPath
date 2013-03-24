@@ -55,4 +55,9 @@ public final class WildcardPathComponentTest {
         assertEquals(expected, result);
     }
 
+    @Test
+    public void testToString() {
+        assertEquals("WildcardPathComponent []", new WildcardPathComponent(null).toString());
+    }
+
 }
