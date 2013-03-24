@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@ package com.nebhale.jsonpath;
 /**
  * A {@link RuntimeException} that indicates that an expression is not legal JSONPath
  * <p />
- * 
+ *
  * <strong>Concurrent Semantics</strong><br />
- * 
+ *
  * Thread-safe
  */
 public final class InvalidJsonPathExpressionException extends RuntimeException {
@@ -31,7 +31,7 @@ public final class InvalidJsonPathExpressionException extends RuntimeException {
     /**
      * Constructs a new runtime exception with the specified detail message. The cause is not initialized, and may
      * subsequently be initialized by a call to {@link Throwable#initCause(java.lang.Throwable)}.
-     * 
+     *
      * @param message the detail message. The detail message is saved for later retrieval by the
      *        {@link Throwable#getMessage()} method.
      */

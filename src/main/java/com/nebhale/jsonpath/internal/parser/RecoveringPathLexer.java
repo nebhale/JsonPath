@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import com.nebhale.jsonpath.internal.parser.Token.TokenType;
 /**
  * An implementation of {@link PathLexer} that tokenizes into the following types:
  * <p />
- * 
+ *
  * <pre>
  * ROOT:            ROOT
  * CHILD:           DOT_CHILD | ARRAY_CHILD
@@ -35,11 +35,11 @@ import com.nebhale.jsonpath.internal.parser.Token.TokenType;
  * SIMPLE_NAME:     SIMPLE_NAME_CHARACTER* | WILDCARD
  * COMPLEX_NAME:    COMPLEX_NAME_CHARACTER* | WILDCARD
  * </pre>
- * 
+ *
  * <strong>Concurrent Semantics</strong><br />
- * 
+ *
  * Thread-safe
- * 
+ *
  * @see StandardPathScanner
  */
 final class RecoveringPathLexer implements PathLexer {

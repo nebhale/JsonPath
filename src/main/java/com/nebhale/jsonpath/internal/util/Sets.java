@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ import java.util.Set;
 /**
  * Utilities for dealing with {@link Set}s
  * <p />
- * 
+ *
  * <strong>Concurrent Semantics</strong><br />
- * 
+ *
  * Thread-safe
  */
 public final class Sets {
@@ -34,7 +34,7 @@ public final class Sets {
 
     /**
      * Creates a {@link Set} from a collection of items
-     * 
+     *
      * @param items The items to create the set from
      * @return The set created from the collection of items
      */

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,14 +21,14 @@ interface PathScanner {
     /**
      * Gets the current {@link PathCharacter}. This method simply returns the character, but does not remove it from the
      * stream.
-     * 
+     *
      * @return The current {@link PathCharacter}
      */
     PathCharacter get();
 
     /**
      * Whether the scanner is ready to produce another {@link PathCharacter}
-     * 
+     *
      * @return Whether the scanner is ready to produce another {@link PathCharacter}
      */
     boolean ready();

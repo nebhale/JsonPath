@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@ package com.nebhale.jsonpath;
 /**
  * A {@link RuntimeException} that indicates that a payload is not legal JSON
  * <p />
- * 
+ *
  * <strong>Concurrent Semantics</strong><br />
- * 
+ *
  * Thread-safe
  */
 public final class InvalidJsonException extends RuntimeException {
@@ -33,7 +33,7 @@ public final class InvalidJsonException extends RuntimeException {
      * cause.toString()}) (which typically contains the class and detail message of {@code cause}). This constructor is
      * useful for exceptions that are little more than wrappers for other throwables (for example,
      * {@link java.security.PrivilegedActionException}).
-     * 
+     *
      * @param cause the cause (which is saved for later retrieval by the {@link Throwable#getCause()} method). (A
      *        {@code null} value is permitted, and indicates that the cause is nonexistent or unknown.)
      */
