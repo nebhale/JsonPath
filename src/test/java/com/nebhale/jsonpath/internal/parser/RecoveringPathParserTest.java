@@ -151,4 +151,9 @@ public final class RecoveringPathParserTest {
         assertProblemCount(result, 1);
         result.getPathComponent();
     }
+
+    @Test
+    public void testToString() {
+        assertEquals("RecoveringPathParser []", this.parser.toString());
+    }
 }

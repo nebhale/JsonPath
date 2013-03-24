@@ -49,4 +49,9 @@ public final class IndexPathComponentTest {
         assertEquals(expected, result);
     }
 
+    @Test
+    public void testToString() {
+        assertEquals("IndexPathComponent [indexes=[0, 1]]", new IndexPathComponent(null, "0,1").toString());
+    }
+
 }

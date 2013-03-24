@@ -69,7 +69,7 @@ final class PathCharacter {
         final int prime = 31;
         int result = 1;
         result = (prime * result) + this.position;
-        result = (prime * result) + ((this.types == null) ? 0 : this.types.hashCode());
+        result = (prime * result) + this.types.hashCode();
         result = (prime * result) + this.value;
         return result;
     }
@@ -89,11 +89,7 @@ final class PathCharacter {
         if (this.position != other.position) {
             return false;
         }
-        if (this.types == null) {
-            if (other.types != null) {
-                return false;
-            }
-        } else if (!this.types.equals(other.types)) {
+        if (!this.types.equals(other.types)) {
             return false;
         }
         if (this.value != other.value) {
@@ -104,12 +100,7 @@ final class PathCharacter {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("PathCharacter [types=").append(this.types);
-        sb.append(", value=").append(this.value);
-        sb.append(", position=").append(this.position);
-        sb.append("]");
-        return sb.toString();
+        return "PathCharacter [types=" + this.types + ", value=" + this.value + ", position=" + this.position + "]";
     }
 
 }

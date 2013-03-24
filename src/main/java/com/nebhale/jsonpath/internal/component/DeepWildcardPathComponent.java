@@ -58,4 +58,9 @@ public final class DeepWildcardPathComponent extends AbstractChainedPathComponen
         return nodes;
     }
 
+    @Override
+    public String toString() {
+        return "DeepWildcardPathComponent []";
+    }
+
 }

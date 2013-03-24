@@ -51,4 +51,9 @@ public final class WildcardPathComponent extends AbstractChainedPathComponent {
         }
     }
 
+    @Override
+    public String toString() {
+        return "WildcardPathComponent []";
+    }
+
 }

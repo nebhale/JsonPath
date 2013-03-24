@@ -193,4 +193,9 @@ public class RecoveringPathLexerTest {
         assertEquals(new Token(TokenType.WILDCARD, 2), result.getTokenStream().remove());
     }
 
+    @Test
+    public void testToString() {
+        assertEquals("RecoveringPathLexer []", this.lexer.toString());
+    }
+
 }

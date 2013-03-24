@@ -37,4 +37,9 @@ public final class RootPathComponent extends AbstractChainedPathComponent {
         return input;
     }
 
+    @Override
+    public String toString() {
+        return "RootPathComponent []";
+    }
+
 }

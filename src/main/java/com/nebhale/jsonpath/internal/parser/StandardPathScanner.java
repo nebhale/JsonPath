@@ -158,4 +158,9 @@ final class StandardPathScanner implements PathScanner {
         return Character.isDigit(c) || (c == COMMA) || (c == SPACE);
     }
 
+    @Override
+    public String toString() {
+        return "StandardPathScanner [pathCharacters=" + this.pathCharacters + ", position=" + this.position + "]";
+    }
+
 }

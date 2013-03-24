@@ -69,7 +69,7 @@ final class Token {
         int result = 1;
         result = (prime * result) + this.endPosition;
         result = (prime * result) + this.startPosition;
-        result = (prime * result) + ((this.type == null) ? 0 : this.type.hashCode());
+        result = (prime * result) + this.type.hashCode();
         result = (prime * result) + ((this.value == null) ? 0 : this.value.hashCode());
         return result;
     }
@@ -107,13 +107,8 @@ final class Token {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Token [type=").append(this.type);
-        sb.append(", value=").append(this.value);
-        sb.append(", startPosition=").append(this.startPosition);
-        sb.append(", endPosition=").append(this.endPosition);
-        sb.append("]");
-        return sb.toString();
+        return "Token [type=" + this.type + ", value=" + this.value + ", startPosition=" + this.startPosition + ", endPosition=" + this.endPosition
+            + "]";
     }
 
 }

@@ -42,4 +42,9 @@ final class LexerResult implements ProblemContainer {
         return this.problems;
     }
 
+    @Override
+    public String toString() {
+        return "LexerResult [tokenStream=" + this.tokenStream + ", problems=" + this.problems + "]";
+    }
+
 }

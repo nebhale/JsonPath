@@ -36,4 +36,10 @@ final class TokenStream {
     boolean hasToken() {
         return this.position < this.tokens.size();
     }
+
+    @Override
+    public String toString() {
+        return "TokenStream [tokens=" + this.tokens + ", position=" + this.position + "]";
+    }
+
 }
