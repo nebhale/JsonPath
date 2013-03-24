@@ -21,7 +21,14 @@ import static com.nebhale.jsonpath.testutils.JsonUtils.STRING_INVALID;
 import static com.nebhale.jsonpath.testutils.JsonUtils.STRING_VALID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -188,5 +195,51 @@ public final class JsonPathTest {
             JsonPath.read("$.store.bicycle.style", NODE, CollectionType.construct(List.class, SimpleType.construct(String.class))));
         assertEquals(Arrays.asList("city", "hybrid", "downhill", "freeride"),
             JsonPath.read("$.store..style", NODE, CollectionType.construct(List.class, SimpleType.construct(String.class))));
+    }
+
+    @Test
+    public void serializable() throws IOException, ClassNotFoundException {
+        assertTrue(Serializable.class.isAssignableFrom(JsonPath.class));
+
+        JsonPath jsonPath = JsonPath.compile("$.store.book[0].title");
+        assertEquals("Sayings of the Century", jsonPath.read(STRING_VALID, String.class));
+
+        byte[] serialized;
+        ObjectOutputStream out = null;
+        try {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            out = new ObjectOutputStream(bytes);
+
+            out.writeObject(jsonPath);
+            out.flush();
+
+            serialized = bytes.toByteArray();
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+
+        JsonPath newJsonPath;
+        ObjectInputStream in = null;
+        try {
+            in = new ObjectInputStream(new ByteArrayInputStream(serialized));
+
+            newJsonPath = (JsonPath) in.readObject();
+        } finally {
+            if (in != null) {
+                in.close();
+            }
+        }
+
+        assertEquals("Sayings of the Century", newJsonPath.read(STRING_VALID, String.class));
+    }
+
+    @Test
+    public void testToString() {
+        assertEquals("JsonPath [expression=$.store.book[0].title]", JsonPath.compile("$.store.book[0].title").toString());
     }
 }

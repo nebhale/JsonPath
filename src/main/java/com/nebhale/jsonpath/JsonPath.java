@@ -17,6 +17,7 @@
 package com.nebhale.jsonpath;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -43,11 +44,16 @@ import com.nebhale.jsonpath.internal.parser.RecoveringPathParser;
  * 
  * @see <a href="http://goessner.net/articles/JsonPath/">http://goessner.net/articles/JsonPath/</a>
  */
-public final class JsonPath {
+public final class JsonPath implements Serializable {
 
-    private final PathComponent pathComponent;
+    private static final long serialVersionUID = 3988258888065355714L;
 
-    private JsonPath(PathComponent pathComponent) {
+    private final String expression;
+
+    private transient final PathComponent pathComponent;
+
+    private JsonPath(String expression, PathComponent pathComponent) {
+        this.expression = expression;
         this.pathComponent = pathComponent;
     }
 
@@ -64,7 +70,7 @@ public final class JsonPath {
         ParserResult parserResult = new RecoveringPathParser().parse(expression);
 
         if (parserResult.getProblems().isEmpty()) {
-            return new JsonPath(parserResult.getPathComponent());
+            return new JsonPath(expression, parserResult.getPathComponent());
         }
 
         throw new InvalidJsonPathExpressionException(getMessage(parserResult.getProblems()));
@@ -276,12 +282,37 @@ public final class JsonPath {
         return objectMapper.convertValue(result, expectedReturnType);
     }
 
+    @Override
+    public String toString() {
+        return "JsonPath [expression=" + this.expression + "]";
+    }
+
     private static String getMessage(List<ExpressionProblem> problems) {
         StringBuilder sb = new StringBuilder();
         for (ExpressionProblem expressionProblem : problems) {
             sb.append(expressionProblem.toString());
         }
         return sb.toString();
+    }
+
+    private Object writeReplace() {
+        return new SerializationProxy(this.expression);
+    }
+
+    private static final class SerializationProxy implements Serializable {
+
+        private static final long serialVersionUID = 9010269726175180293L;
+
+        private volatile String expression;
+
+        private SerializationProxy(String expression) {
+            this.expression = expression;
+        }
+
+        private Object readResolve() {
+            return JsonPath.compile(this.expression);
+        }
+
     }
 
 }
