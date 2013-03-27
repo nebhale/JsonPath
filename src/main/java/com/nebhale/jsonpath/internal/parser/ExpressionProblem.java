@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@ package com.nebhale.jsonpath.internal.parser;
 /**
  * Represents a problem found during the parsing of a JSONPath expression
  * <p />
- * 
+ *
  * <strong>Concurrent Semantics</strong><br />
- * 
+ *
  * Thread-safe
  */
 public final class ExpressionProblem {

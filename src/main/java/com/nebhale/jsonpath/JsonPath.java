@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,11 +37,11 @@ import com.nebhale.jsonpath.internal.parser.RecoveringPathParser;
  * A JSONPath expression, specified as a string, must first be compiled into an instance of this class. The resulting
  * pattern can then be used to read content from a JSON object.
  * <p />
- * 
+ *
  * <strong>Concurrent Semantics</strong><br />
- * 
+ *
  * Thread-safe both during compilation of the expression and the use of the resulting {@link JsonPath}
- * 
+ *
  * @see <a href="http://goessner.net/articles/JsonPath/">http://goessner.net/articles/JsonPath/</a>
  */
 public final class JsonPath implements Serializable {
@@ -59,11 +59,11 @@ public final class JsonPath implements Serializable {
 
     /**
      * Compiles the given JSONPath expression into a {@link JsonPath}
-     * 
+     *
      * @param expression The expression to compile
-     * 
+     *
      * @return A {@link JsonPath} that can be used to read content from JSON payloads
-     * 
+     *
      * @throws InvalidJsonPathExpressionException if the {@code expression} argument is not a legal JSONPath expression
      */
     public static JsonPath compile(String expression) {
@@ -81,13 +81,13 @@ public final class JsonPath implements Serializable {
      * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
      * {@link #compile(String)} followed by a call to {@link #read(String, Class)}. There is no performance benefit to
      * calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
-     * 
+     *
      * @param expression The expression to use to read content
      * @param json The JSON payload to retrieve data from
      * @param expectedReturnType The type that the return value is expected to be
-     * 
+     *
      * @return The content read from the JSON payload
-     * 
+     *
      * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
      */
     public static <T> T read(String expression, String json, Class<T> expectedReturnType) {
@@ -100,13 +100,13 @@ public final class JsonPath implements Serializable {
      * {@link #compile(String)} followed by a call to {@link #read(String, TypeReference)}. There is no performance
      * benefit to calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath}
      * expression.
-     * 
+     *
      * @param expression The expression to use to read content
      * @param json The JSON payload to retrieve data from
      * @param expectedReturnType The type that the return value is expected to be
-     * 
+     *
      * @return The content read from the JSON payload
-     * 
+     *
      * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
      */
     public static <T> T read(String expression, String json, TypeReference<?> expectedReturnType) {
@@ -118,13 +118,13 @@ public final class JsonPath implements Serializable {
      * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
      * {@link #compile(String)} followed by a call to {@link #read(String, JavaType)}. There is no performance benefit
      * to calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
-     * 
+     *
      * @param expression The expression to use to read content
      * @param json The JSON payload to retrieve data from
      * @param expectedReturnType The type that the return value is expected to be
-     * 
+     *
      * @return The content read from the JSON payload
-     * 
+     *
      * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
      */
     public static <T> T read(String expression, String json, JavaType expectedReturnType) {
@@ -136,11 +136,11 @@ public final class JsonPath implements Serializable {
      * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
      * {@link #compile(String)} followed by a call to {@link #read(JsonNode, Class)}. There is no performance benefit to
      * calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
-     * 
+     *
      * @param expression The expression to use to read content
      * @param json The JSON payload to retrieve data from
      * @param expectedReturnType The type that the return value is expected to be
-     * 
+     *
      * @return The content read from the JSON payload
      */
     public static <T> T read(String expression, JsonNode json, Class<T> expectedReturnType) {
@@ -153,11 +153,11 @@ public final class JsonPath implements Serializable {
      * {@link #compile(String)} followed by a call to {@link #read(JsonNode, TypeReference)}. There is no performance
      * benefit to calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath}
      * expression.
-     * 
+     *
      * @param expression The expression to use to read content
      * @param json The JSON payload to retrieve data from
      * @param expectedReturnType The type that the return value is expected to be
-     * 
+     *
      * @return The content read from the JSON payload
      */
     public static <T> T read(String expression, JsonNode json, TypeReference<?> expectedReturnType) {
@@ -169,11 +169,11 @@ public final class JsonPath implements Serializable {
      * of data from a JSON payload. <b>Note</b> that this is simply an encapsulation of a call to
      * {@link #compile(String)} followed by a call to {@link #read(JsonNode, JavaType)}. There is no performance benefit
      * to calling this method and it has the downside of not allowing reuse of a compiled {@link JsonPath} expression.
-     * 
+     *
      * @param expression The expression to use to read content
      * @param json The JSON payload to retrieve data from
      * @param expectedReturnType The type that the return value is expected to be
-     * 
+     *
      * @return The content read from the JSON payload
      */
     public static <T> T read(String expression, JsonNode json, JavaType expectedReturnType) {
@@ -182,12 +182,12 @@ public final class JsonPath implements Serializable {
 
     /**
      * Reads content from a JSON payload based on the expression compiled into this instance
-     * 
+     *
      * @param json The JSON payload to retrieve data from
      * @param expectedReturnType The type that the return value is expected to be
-     * 
+     *
      * @return The content read from the JSON payload
-     * 
+     *
      * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
      */
     public <T> T read(String json, Class<T> expectedReturnType) {
@@ -202,12 +202,12 @@ public final class JsonPath implements Serializable {
 
     /**
      * Reads content from a JSON payload based on the expression compiled into this instance
-     * 
+     *
      * @param json The JSON payload to retrieve data from
      * @param expectedReturnType The type that the return value is expected to be
-     * 
+     *
      * @return The content read from the JSON payload
-     * 
+     *
      * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
      */
     public <T> T read(String json, TypeReference<?> expectedReturnType) {
@@ -222,12 +222,12 @@ public final class JsonPath implements Serializable {
 
     /**
      * Reads content from a JSON payload based on the expression compiled into this instance
-     * 
+     *
      * @param json The JSON payload to retrieve data from
      * @param expectedReturnType The type that the return value is expected to be
-     * 
+     *
      * @return The content read from the JSON payload
-     * 
+     *
      * @throws InvalidJsonException if the {@code json} argument is not a legal JSON string
      */
     public <T> T read(String json, JavaType expectedReturnType) {
@@ -242,10 +242,10 @@ public final class JsonPath implements Serializable {
 
     /**
      * Reads content from a JSON payload based on the expression compiled into this instance
-     * 
+     *
      * @param json The JSON payload to retrieve data from
      * @param expectedReturnType The type that the return value is expected to be
-     * 
+     *
      * @return The content read from the JSON payload
      */
     public <T> T read(JsonNode json, Class<T> expectedReturnType) {
@@ -256,10 +256,10 @@ public final class JsonPath implements Serializable {
 
     /**
      * Reads content from a JSON payload based on the expression compiled into this instance
-     * 
+     *
      * @param json The JSON payload to retrieve data from
      * @param expectedReturnType The type that the return value is expected to be
-     * 
+     *
      * @return The content read from the JSON payload
      */
     public <T> T read(JsonNode json, TypeReference<?> expectedReturnType) {
@@ -270,10 +270,10 @@ public final class JsonPath implements Serializable {
 
     /**
      * Reads content from a JSON payload based on the expression compiled into this instance
-     * 
+     *
      * @param json The JSON payload to retrieve data from
      * @param expectedReturnType The type that the return value is expected to be
-     * 
+     *
      * @return The content read from the JSON payload
      */
     public <T> T read(JsonNode json, JavaType expectedReturnType) {

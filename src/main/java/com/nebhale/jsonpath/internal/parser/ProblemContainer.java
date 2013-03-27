@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,16 +21,16 @@ import java.util.List;
 /**
  * Indicates that a type contains {@link ExpressionProblem}s
  * <p />
- * 
+ *
  * <strong>Concurrent Semantics</strong><br />
- * 
+ *
  * Implementations must be thread-safe
  */
 public interface ProblemContainer {
 
     /**
      * The collection of problems contained within this type
-     * 
+     *
      * @return The collection of problems contained within this type
      */
     List<ExpressionProblem> getProblems();

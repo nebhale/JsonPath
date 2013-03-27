@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,14 +27,14 @@ import com.nebhale.jsonpath.internal.util.Sets;
 /**
  * A {@link PathScanner} that scans into the following types:
  * <p />
- * 
+ *
  * <pre>
  * COMPLEX_NAME_CHARACTER: LETTER | DIGIT | COMMA | HYPHEN | SPACE | UNDERSCORE
  * SIMPLE_NAME_CHARACTER:  LETTER | DIGIT | UNDERSCORE
  * INDEX_CHARACTER:        DIGIT | COMMA | SPACE
  * LETTER:                 [A-Za-z]
  * DIGIT:                  [0-9]
- * 
+ *
  * ARRAY_CLOSE:     ]
  * ARRAY_OPEN:      [
  * COMMA:           ,
@@ -47,9 +47,9 @@ import com.nebhale.jsonpath.internal.util.Sets;
  * UNDERSCORE:      _
  * WILDCARD:        *
  * </pre>
- * 
+ *
  * <strong>Concurrent Semantics</strong><br />
- * 
+ *
  * Not thread-safe
  */
 final class StandardPathScanner implements PathScanner {

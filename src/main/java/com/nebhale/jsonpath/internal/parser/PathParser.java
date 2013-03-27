@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,20 +19,20 @@ package com.nebhale.jsonpath.internal.parser;
 /**
  * A parser for parsing <a href="http://goessner.net/articles/JsonPath/">JSONPath expressions</a>.
  * <p />
- * 
+ *
  * <strong>Concurrent Semantics</strong><br />
- * 
+ *
  * Implementations must be thread-safe
- * 
+ *
  * @see <a href="http://goessner.net/articles/JsonPath/">http://goessner.net/articles/JsonPath/</a>
  */
 public interface PathParser {
 
     /**
      * Parses a JSONPath expression into a {@link ParserResult}
-     * 
+     *
      * @param expression The JSONPath expression to parse
-     * 
+     *
      * @return The results of parsing the expression
      */
     ParserResult parse(String expression);

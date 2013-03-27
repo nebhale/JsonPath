@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 /**
  * Represents a segment of a JSONPath expression
  * <p />
- * 
+ *
  * <strong>Concurrent Semantics</strong><br />
- * 
+ *
  * Implementations must be thread-safe
  */
 public interface PathComponent {
@@ -31,9 +31,9 @@ public interface PathComponent {
     /**
      * Returns a {@link JsonNode} that represents the current state of a JSONPath selection after this
      * {@link PathComponent} is finished with it
-     * 
+     *
      * @param input A {@link JsonNode} that represents the context that this JSONPath selection should work against
-     * 
+     *
      * @return the current state of a JSONPath selection after this {@link PathComponent} is finished with it
      */
     JsonNode get(JsonNode input);
