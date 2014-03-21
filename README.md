@@ -1,4 +1,5 @@
-# JsonPath [![Build Status](https://travis-ci.org/nebhale/JsonPath.png?branch=master)](https://travis-ci.org/nebhale/JsonPath)
+# JsonPath
+[![Build Status](https://travis-ci.org/nebhale/JsonPath.svg?branch=master)](https://travis-ci.org/nebhale/JsonPath)
 
 JsonPath is a Java implementation of the JSONPath specification.  Details about the specification can be found at <http://goessner.net/articles/JsonPath/>. This implementation is designed to mimic the [Java `Pattern` class][pattern] and it's lifecycle.
 
