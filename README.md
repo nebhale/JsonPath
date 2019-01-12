@@ -128,7 +128,7 @@ Here is a complete overview of the JSONPath syntax:
 
 # Tag Verification
 
-To verfiy the tags in this repository and the binaries published to Maven Central, use key `0x42631EF0` with a fingerprint of `CFB3 32DE 038D FF28 8439  5AE0 C5A6 27B3 4263 1EF0 `.
+To verify the tags in this repository and the binaries published to Maven Central, use key `0x42631EF0` with a fingerprint of `CFB3 32DE 038D FF28 8439  5AE0 C5A6 27B3 4263 1EF0 `.
 
 # Apache License
 Version 2.0, January 2004
